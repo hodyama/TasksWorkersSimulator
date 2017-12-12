@@ -76,6 +76,7 @@ namespace TaskSimulationCmd
             Log.I();
             Log.I("----------- Print Results ----------- ", ConsoleColor.Blue);
             //_summaries.ToList().ForEach(v => Log.I(v.ToString()));
+            Log.I();
         }
 
         public static string SingleExecution(double time, long workers)
