@@ -25,9 +25,10 @@ namespace TaskSimulation.ChooseAlgorithms
 
         public Grade UpdateOnTaskAdd(Grade grade)
         {
-            grade.NumberOfTasksGrade++; // TODO add to metadata as NumberOfTasks
+            // TODO add to metadata as NumberOfTasks
 
             UpdateQueueGrade(ref grade);
+            grade.NumberOfTasksGrade++;
 
             return grade;
         }
@@ -61,21 +62,28 @@ namespace TaskSimulation.ChooseAlgorithms
 
             var workingTime = grade.Meta.WorkingTime;
 
+            var sum = grade.Meta.tl;
+            var currentQeueuValue = (grade.NumberOfTasksGrade - TASKS_IN_PROSS);
+            if (currentQeueuValue < 0)
+                 currentQeueuValue = 0;
             var newDeltaTime = currentTime - grade.Meta.LastModifiedAt;
-
             if (newDeltaTime <= 0)
                 return;
+            sum += currentQeueuValue * newDeltaTime;
 
             grade.Meta.WorkingTime += newDeltaTime;
 
-            var currentQeueuValue = (grade.NumberOfTasksGrade - TASKS_IN_PROSS);
 
-            // Avarage
-            grade.ResponseGrade = LMath.AverageIncrementalSize(grade.ResponseGrade, workingTime, currentQeueuValue, newDeltaTime);
+            //grade.ResponseGrade = LMath.AverageIncrementalSize(grade.ResponseGrade, workingTime, currentQeueuValue, newDeltaTime);
+
+           
+            grade.ResponseGrade = sum / currentTime;
 
             grade.TotalGrade = grade.ResponseGrade; // TODO add FeedbackGrade
+            grade.Meta.tl = sum;
 
             grade.Meta.LastModifiedAt = Simulator.SimulateServer.SimulationClock;
+            
         }
     }
 }

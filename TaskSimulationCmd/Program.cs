@@ -76,7 +76,9 @@ namespace TaskSimulationCmd
             Log.I();
             Log.I("----------- Print Results ----------- ", ConsoleColor.Blue);
             //_summaries.ToList().ForEach(v => Log.I(v.ToString()));
-            Log.I();
+            
+            while (true)
+            { }
         }
 
         public static string SingleExecution(double time, long workers)
@@ -86,11 +88,12 @@ namespace TaskSimulationCmd
             simulator.Initialize(workers);
 
             simulator.Start();
-
+            
+            
             Log.I();
             Log.I();
             Log.I("----------- Post execution calculations ----------- ", ConsoleColor.Blue);
-
+            simulator.GetBaseData();
             var rf = new ResultsFile($"test_{DateTime.Now.ToFileTime()}.csv", simulator.GetResults());
             rf.GenerateCsvFile();
             

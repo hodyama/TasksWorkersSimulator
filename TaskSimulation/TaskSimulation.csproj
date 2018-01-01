@@ -59,6 +59,7 @@
     <Compile Include="Distribution\ReflectIContinuousDistribution.cs" />
     <Compile Include="Distribution\SimDistribution.cs" />
     <Compile Include="ChooseAlgorithms\IChooseWorkerAlgo.cs" />
+    <Compile Include="Results\BaseData.cs" />
     <Compile Include="Results\DebugSimpleOutput.cs" />
     <Compile Include="Results\ResultsFile.cs" />
     <Compile Include="Results\SystemUtilizationStatistics2.cs" />

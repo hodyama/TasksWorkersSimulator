@@ -20,6 +20,7 @@
 
         public class MetaData
         {
+            public double tl;
             public double LastModifiedAt;
             public double WorkingTime;
         }

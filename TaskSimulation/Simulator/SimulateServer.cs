@@ -17,6 +17,7 @@ namespace TaskSimulation.Simulator
         private readonly SimulationEventMan _simulationEvents;
         private readonly Utilization _utilization;// { get; private set; }
         private readonly DebugSimpleOutput _dbPrint;
+        private readonly BaseData _bData;
 
         public SimulateServer(double maxSimulationTime = Int32.MaxValue)
         {
@@ -28,6 +29,7 @@ namespace TaskSimulation.Simulator
             _tasksJournal = new TasksJournal();
             _workersJournal = new WorkersJournal();
             _dbPrint = new DebugSimpleOutput();
+            _bData = new BaseData();
         }
 
         public void Initialize(long initialNumOfWorkers)
@@ -54,19 +56,23 @@ namespace TaskSimulation.Simulator
                 Log.I();
                 Log.Event( $"{nextEvent} at time {SimulationClock,-5:#0.##}");
 
+
                 if (nextEvent is TaskArrivalEvent || nextEvent is TaskFinishedEvent)
                 {
                     nextEvent.Accept(_tasksJournal);
+                    nextEvent.Accept(_bData);
                     nextEvent.Accept(_workersJournal);
                 }
                 else
                 {
                     nextEvent.Accept(_workersJournal);
+                    nextEvent.Accept(_bData);
                     nextEvent.Accept(_tasksJournal);
                 }
-
+                
                 nextEvent.Accept(_utilization);
                 nextEvent.Accept(_dbPrint);
+                
 
                 #if DEBUG
                 PrintSimulationState();
@@ -90,6 +96,10 @@ namespace TaskSimulation.Simulator
         {
             return _dbPrint.ToString();
         }
+        public void GetBaseData()
+        {
+             _bData.CreateBaseDataFile();
+        }
 
         public void PrintSimulationState()
         {
@@ -97,6 +107,7 @@ namespace TaskSimulation.Simulator
 
             _workersJournal.ActiveWorkers.ForEach(w =>
             {
+                
                 Log.I($"{w} {w.Grade}");
             });
         }

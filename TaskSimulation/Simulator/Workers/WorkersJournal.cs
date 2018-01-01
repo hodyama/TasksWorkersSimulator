@@ -29,7 +29,7 @@ namespace TaskSimulation.Simulator.Workers
         {
             if (_activeWorkers.Count <= 0)
                 return;
-
+        
             var workers = _chooseAlgo.ChooseWorkers(_activeWorkers, NUM_OF_WORKERS_ON_TASK);
 
             // Assign the task to each worker

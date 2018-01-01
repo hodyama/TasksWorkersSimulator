@@ -20,8 +20,9 @@ namespace TaskSimulation.Simulator.Events
         public void InitializeGenesisEvents(int tasks = 1, long workers = 1)
         {
             // Add the base periodic events
-            AddEvent(new TaskArrivalPeriodicEvent(this, 0));
+            
             AddEvent(new WorkerArrivalPeriodicEvent(this, 0));
+            AddEvent(new TaskArrivalPeriodicEvent(this, 0));
 
             // Add the extra workers and tasks as events
             for (var t = 0; t < tasks - 1; t++)
@@ -39,6 +40,7 @@ namespace TaskSimulation.Simulator.Events
                 Log.Err("!!! time up !!");
 
             Log.D(msg);
+            
 
             _events.Enqueue(newEvent);
 
