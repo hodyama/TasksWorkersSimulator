@@ -51,6 +51,7 @@ namespace TaskSimulation.Results
                    _workersGradesAtArrivalTask[time].Add(keyValuePair.Key, keyValuePair.Key.Grade.TotalGrade);
                  
             }*/
+
             
             task.OnAddedToWorker += w =>
             {
