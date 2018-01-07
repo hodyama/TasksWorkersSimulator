@@ -33,6 +33,13 @@ namespace TaskSimulation.ChooseAlgorithms
 
             return grade;
         }
+        public Grade UpdateOnTaskArrival(Grade grade)
+        {
+            
+            grade.TotalGrade = CalculateFinalGrade(grade);
+
+            return grade;
+        }
 
         //public Grade UpdateOnTaskRemoved(Grade grade, double responseTime)
         public Grade UpdateOnTaskRemoved(Worker worker, Task task)

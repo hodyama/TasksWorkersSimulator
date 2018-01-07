@@ -38,7 +38,7 @@ namespace TaskSimulation.Distribution
                 FeedbackStd = ReflectIContinuousDistribution.GetDistribution (wqd.FeedbackStd.Type,     wqd.FeedbackStd.Params,     GlobalRandom),
                 QualityMean = ReflectIContinuousDistribution.GetDistribution (wqd.QualityMean.Type,     wqd.QualityMean.Params,     GlobalRandom),
                 QualityStd = ReflectIContinuousDistribution.GetDistribution  (wqd.QualityStd.Type,      wqd.QualityStd.Params,      GlobalRandom),
-                ProcessingMean = ReflectIContinuousDistribution.GetDistribution(wqd.ProcessingTimeMean.Type,wqd.ProcessingTimeMean.Params,GlobalRandom),
+                ProcessingMean =ReflectIContinuousDistribution.GetDistribution(wqd.ProcessingTimeMean.Type,wqd.ProcessingTimeMean.Params,GlobalRandom),
                 ProcessingStd = ReflectIContinuousDistribution.GetDistribution (wqd.ProcessingTimeStd.Type, wqd.ProcessingTimeStd.Params, GlobalRandom),
             };
 
@@ -48,6 +48,7 @@ namespace TaskSimulation.Distribution
         public IContinuousDistribution TaskArrivalRate { get; private set; }
         public IContinuousDistribution WorkerArrivalRate { get; private set; }
         public IContinuousDistribution WorkerLeaveRate { get; private set; }
+        
 
         public IGradeCalcAlgo GradeSystem { get; set; }
         public IChooseWorkerAlgo GradeSystemChooseMethod { get; set; }

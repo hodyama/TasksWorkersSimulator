@@ -36,7 +36,8 @@ namespace TaskSimulationCmd
             var execData = LoadInputFile(args);
             if (execData == null) return;
 
-            SimDistribution.I.Initialize(Guid.NewGuid().GetHashCode());
+           // SimDistribution.I.Initialize(Guid.NewGuid().GetHashCode());
+            SimDistribution.I.Initialize(0);
             Log.I($"Global seed is {SimDistribution.I.GlobalSeed}");
             Log.I($"Global Random is {SimDistribution.I.GlobalRandom}");
 

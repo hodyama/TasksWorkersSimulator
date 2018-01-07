@@ -8,7 +8,9 @@ namespace TaskSimulation.ChooseAlgorithms
         Grade InitialGrade();
 
         Grade UpdateOnTaskAdd(Grade grade);
-        
+
+        Grade UpdateOnTaskArrival(Grade grade);
+
         Grade UpdateOnTaskRemoved(Worker worker, Task task);
 
         IChooseWorkerAlgo ChooseMethod();

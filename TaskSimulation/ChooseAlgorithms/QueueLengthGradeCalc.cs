@@ -32,7 +32,12 @@ namespace TaskSimulation.ChooseAlgorithms
 
             return grade;
         }
+        public Grade UpdateOnTaskArrival(Grade grade)
+        {
+            UpdateQueueGrade(ref grade);
+            return grade;
 
+        }
         public Grade UpdateOnTaskRemoved(Worker worker, Task task) //WORKER TASK
         {
             var grade = worker.Grade;

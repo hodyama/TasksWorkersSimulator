@@ -11,5 +11,6 @@ namespace TaskSimulation.Simulator.Events
         {
             return SimDistribution.I.TaskArrivalRate;
         }
+
     }
 }
