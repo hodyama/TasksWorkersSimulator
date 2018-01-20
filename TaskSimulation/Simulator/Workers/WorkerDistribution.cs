@@ -20,8 +20,8 @@ namespace TaskSimulation.Simulator.Workers
             //TODO get type from input file
             Feedback        = new Normal(qualies.FeedbackMean, qualies.FeedbackStd, privateRandom);
             JobQuality      = new Normal(qualies.QualityMean,  qualies.QualityStd,  privateRandom);
-            ResponseTime    = new Normal(qualies.ResponseMean,  qualies.ResponseStd,  privateRandom);
-           
+            // ResponseTime    = new Normal(qualies.ResponseMean,  qualies.ResponseStd,  privateRandom);
+            ResponseTime = new Exponential(qualies.ResponseMean, privateRandom);
         }
 
         public WorkerDistribution(IContinuousDistribution feedback, IContinuousDistribution jobQuality, IContinuousDistribution responseTime)
