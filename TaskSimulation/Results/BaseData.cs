@@ -128,7 +128,10 @@ namespace TaskSimulation.Results
             _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
             _sw.WriteLine(GetTimeOfStartProcessingTaskForWorker());
             _sw.WriteLine();
-
+            _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
+            _sw.WriteLine(GetTimeOfStartProcessingTaskForWorker());
+            _sw.WriteLine(GetMeanRateOfTasksArrival());
+            
             _sw.Close();
             
         }
@@ -180,15 +183,10 @@ namespace TaskSimulation.Results
         private string GetAvgQueueLength()
         {
             StringBuilder sb = new StringBuilder();
-
+            sb.AppendLine($"{"worker id"},{"Avg Queue Length"}");
             foreach (var keyValuePair in _workersQueue)
-            {
-                sb.AppendLine($"{"worker id"},{"Avg Queue Length"}");
-                
-                sb.AppendLine($"{keyValuePair.Key.GetWorkerID()},{keyValuePair.Key.Grade.TotalGrade}");
-                   
-                
-            }
+                 sb.AppendLine($"{keyValuePair.Key.GetWorkerID()},{keyValuePair.Key.Grade.TotalGrade}");
+           
             return sb.ToString();
         }
         private string GetWorkersBusyAtTime()
@@ -216,14 +214,23 @@ namespace TaskSimulation.Results
         private string GetTasksProcessingTime()
         {
             StringBuilder sb = new StringBuilder();
+            StringBuilder sbt = new StringBuilder();
+            sbt.AppendLine($"{"worker id"},{"avg tasks processing time"}");
+            
             foreach (var keyValuePair in _workersFinishedTasks)
             {
+                var avgP = 0.0;
                 sb.AppendLine($"{keyValuePair.Key+"tasks"},{"task processing time"}");
                 foreach (var item in keyValuePair.Value)
-                
-                    sb.AppendLine($"{item.GetTaskId()},{item.EndTime-item.StartTime}");
-                
+                {
+                    avgP += item.EndTime - item.StartTime;
+                    sb.AppendLine($"{item.GetTaskId()},{item.EndTime - item.StartTime}");
+                }
+                sbt.AppendLine($"{keyValuePair.Key.GetWorkerID()},{avgP/keyValuePair.Value.Count}");
+
+
             }
+            sb.AppendLine(sbt.ToString());
             return sb.ToString();
         }
         
@@ -254,18 +261,41 @@ namespace TaskSimulation.Results
             }
             return sb.ToString();
         }
+        private string GetMeanRateOfTasksArrival()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var keyValuePair in _workersFinishedTasks)
+            {
+                var sum = 0.0;
+                sb.AppendLine($"{keyValuePair.Key },{"MeanRateOfTasksArrival"}");
+                foreach (var item in keyValuePair.Value)
+                    sum += item.CreatedTime;
+
+                sb.AppendLine($"{sum/keyValuePair.Value.Count}");
+                
+
+            }
+            return sb.ToString();
+        }
         private string GetTasksWaitingTime()
         {
             StringBuilder sb = new StringBuilder();
-            
+            StringBuilder sbt = new StringBuilder();
+            sbt.AppendLine($"{"worker id"},{"avg tasks waiting time"}");
+
             foreach (var keyValuePair in _workersFinishedTasks)
             {
+                var avgW = 0.0;
                 sb.AppendLine($"{keyValuePair.Key + "tasks"},{"task waiting time"}");
                 foreach (var item in keyValuePair.Value)
-
-                    sb.AppendLine($"{item.GetTaskId()},{item.StartTime-item.CreatedTime}");
+                {
+                    avgW += item.StartTime - item.CreatedTime;
+                    sb.AppendLine($"{item.GetTaskId()},{item.StartTime - item.CreatedTime}");
+                }
+                sbt.AppendLine($"{keyValuePair.Key.GetWorkerID()},{avgW / keyValuePair.Value.Count}");
 
             }
+            sb.AppendLine(sbt.ToString());
             return sb.ToString();
         }
       

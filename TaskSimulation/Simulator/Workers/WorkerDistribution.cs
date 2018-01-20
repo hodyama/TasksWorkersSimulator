@@ -21,6 +21,7 @@ namespace TaskSimulation.Simulator.Workers
             Feedback        = new Normal(qualies.FeedbackMean, qualies.FeedbackStd, privateRandom);
             JobQuality      = new Normal(qualies.QualityMean,  qualies.QualityStd,  privateRandom);
             ResponseTime    = new Normal(qualies.ResponseMean,  qualies.ResponseStd,  privateRandom);
+           
         }
 
         public WorkerDistribution(IContinuousDistribution feedback, IContinuousDistribution jobQuality, IContinuousDistribution responseTime)
@@ -28,6 +29,7 @@ namespace TaskSimulation.Simulator.Workers
             Feedback = feedback;
             JobQuality = jobQuality;
             ResponseTime = responseTime;
+           
         }
 
     }
