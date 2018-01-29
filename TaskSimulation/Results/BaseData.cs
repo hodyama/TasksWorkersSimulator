@@ -131,6 +131,8 @@ namespace TaskSimulation.Results
             _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
             _sw.WriteLine(GetTimeOfStartProcessingTaskForWorker());
             _sw.WriteLine(GetMeanRateOfTasksArrival());
+            _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
+            _sw.WriteLine(GetUtilization());
             
             _sw.Close();
             
@@ -184,9 +186,72 @@ namespace TaskSimulation.Results
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"{"worker id"},{"Avg Queue Length"}");
+            
             foreach (var keyValuePair in _workersQueue)
-                 sb.AppendLine($"{keyValuePair.Key.GetWorkerID()},{keyValuePair.Key.Grade.TotalGrade}");
-           
+            {
+                var q = 0;
+                var t0 = 0.0;
+                var t1 = 0.0;
+                var tl = 0.0;
+                
+                foreach (var keyValuePair2 in keyValuePair.Value)
+                {
+                    t1 = keyValuePair2.Key;
+                    var tmpq= keyValuePair2.Value-1;
+                    if (tmpq < 0)
+                        tmpq = 0;
+                    if(tmpq!=q)
+                    {
+
+                        
+                        tl +=  q * (t1 - t0);
+                        t0 = keyValuePair2.Key;
+                       
+                        q = tmpq;
+                    }
+                   
+                    
+                }
+                sb.AppendLine($"{keyValuePair.Key},{tl/ Simulator.SimulateServer.SimulationClock}");
+
+            }
+
+            return sb.ToString();
+        }
+        private string GetUtilization()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"{"worker id"},{"worker utilization"}");
+
+            foreach (var keyValuePair in _workersQueue)
+            {
+                var q = 0;
+                var t0 = 0.0;
+                var t1 = 0.0;
+                var tl = 0.0;
+
+                foreach (var keyValuePair2 in keyValuePair.Value)
+                {
+                    t1 = keyValuePair2.Key;
+                    var tmpq = keyValuePair2.Value ;
+                    if (tmpq != 0)
+                        tmpq = 1;
+                    if (tmpq != q)
+                    {
+
+
+                        tl += q * (t1 - t0);
+                        t0 = keyValuePair2.Key;
+
+                        q = tmpq;
+                    }
+
+
+                }
+                sb.AppendLine($"{keyValuePair.Key},{tl / Simulator.SimulateServer.SimulationClock}");
+
+            }
+
             return sb.ToString();
         }
         private string GetWorkersBusyAtTime()
@@ -200,9 +265,8 @@ namespace TaskSimulation.Results
                 foreach (var keyValuePair2 in keyValuePair.Value)
                 {
                     var busy= keyValuePair2.Value ;
-                    if (busy == 0)
-                        busy = 0;
-                    else
+                    if (busy != 0)
+                
                         busy = 1;
                     sb.AppendLine($"{keyValuePair2.Key},{tmp}");
                     sb.AppendLine($"{keyValuePair2.Key},{busy}");

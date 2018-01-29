@@ -18,6 +18,7 @@ namespace TaskSimulation.Simulator
         private readonly Utilization _utilization;// { get; private set; }
         private readonly DebugSimpleOutput _dbPrint;
         private readonly BaseData _bData;
+        private const int noiseTime= 100;
 
         public SimulateServer(double maxSimulationTime = Int32.MaxValue)
         {
@@ -60,13 +61,15 @@ namespace TaskSimulation.Simulator
                 if (nextEvent is TaskArrivalEvent || nextEvent is TaskFinishedEvent)
                 {
                     nextEvent.Accept(_tasksJournal);
-                    nextEvent.Accept(_bData);
+                    if(SimulationClock>100)
+                        nextEvent.Accept(_bData);
                     nextEvent.Accept(_workersJournal);
                 }
                 else
                 {
                     nextEvent.Accept(_workersJournal);
-                    nextEvent.Accept(_bData);
+                    if (SimulationClock > 100)
+                        nextEvent.Accept(_bData);
                     nextEvent.Accept(_tasksJournal);
                 }
                 

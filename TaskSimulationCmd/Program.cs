@@ -46,8 +46,8 @@ namespace TaskSimulationCmd
 
             // TODO move grade system to file
             //SimDistribution.I.GradeSystem = new OriginalGradeCalc();
-            // SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
-            SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
+             SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
+           // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
             SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
 
             for (var i = 0; i < executions; i++)
