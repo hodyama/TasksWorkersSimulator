@@ -68,8 +68,8 @@ namespace TaskSimulation.Simulator
                 else
                 {
                     nextEvent.Accept(_workersJournal);
-                    if (SimulationClock > 100)
-                        nextEvent.Accept(_bData);
+                   
+                    nextEvent.Accept(_bData);
                     nextEvent.Accept(_tasksJournal);
                 }
                 

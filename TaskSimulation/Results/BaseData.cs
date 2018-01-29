@@ -190,8 +190,8 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersQueue)
             {
                 var q = 0;
-                var t0 = 0.0;
-                var t1 = 0.0;
+                var t0 = 100.0;
+                var t1 = 100.0;
                 var tl = 0.0;
                 
                 foreach (var keyValuePair2 in keyValuePair.Value)
@@ -212,7 +212,7 @@ namespace TaskSimulation.Results
                    
                     
                 }
-                sb.AppendLine($"{keyValuePair.Key},{tl/ Simulator.SimulateServer.SimulationClock}");
+                sb.AppendLine($"{keyValuePair.Key},{tl/( Simulator.SimulateServer.SimulationClock-100)}");
 
             }
 
@@ -226,8 +226,8 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersQueue)
             {
                 var q = 0;
-                var t0 = 0.0;
-                var t1 = 0.0;
+                var t0 = 100.0;
+                var t1 = 100.0;
                 var tl = 0.0;
 
                 foreach (var keyValuePair2 in keyValuePair.Value)
@@ -248,7 +248,7 @@ namespace TaskSimulation.Results
 
 
                 }
-                sb.AppendLine($"{keyValuePair.Key},{tl / Simulator.SimulateServer.SimulationClock}");
+                sb.AppendLine($"{keyValuePair.Key},{tl / (Simulator.SimulateServer.SimulationClock-100)}");
 
             }
 
