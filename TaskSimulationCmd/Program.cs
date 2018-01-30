@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using TaskSimulation;
 using TaskSimulation.ChooseAlgorithms;
@@ -30,7 +31,7 @@ namespace TaskSimulationCmd
 
         static ExecutionSummary[] _summaries;
         static Stopwatch _stopwatch = new Stopwatch();
-
+        static StreamWriter _sw;
         static void Main(string[] args)
         {
             var execData = LoadInputFile(args);
@@ -43,17 +44,17 @@ namespace TaskSimulationCmd
 
             var executions = execData.Executions.Length;
             _summaries = new ExecutionSummary[executions];
-
+           
             // TODO move grade system to file
             //SimDistribution.I.GradeSystem = new OriginalGradeCalc();
              SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
            // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
             SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
-
-            for (var i = 0; i < executions; i++)
+            _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
+            for (var i = 0; i < 121; i++)
             {
                 // Load the execution data for each iteration
-                var loadStatus = SimDistribution.I.LoadData(i, execData);
+                var loadStatus = SimDistribution.I.LoadData(0, execData);
 
                 if (!loadStatus)
                 {
@@ -61,8 +62,8 @@ namespace TaskSimulationCmd
                     return;
                 }
 
-                var initialNumOfWorkers = execData.Executions[i].InitialNumOfWorkers;
-                var maxSimulationTime   = execData.Executions[i].MaxSimulationTime;
+                var initialNumOfWorkers = execData.Executions[0].InitialNumOfWorkers;
+                var maxSimulationTime   = execData.Executions[0].MaxSimulationTime;
 
                 Log.I($"------------ Simulation Execution {i} ------------", ConsoleColor.DarkCyan);
 
@@ -72,13 +73,16 @@ namespace TaskSimulationCmd
 
                 Log.I($"Execution -{i}- Runtime: {_stopwatch.Elapsed}", ConsoleColor.Blue);
                 Log.I();
+                
+
+                
 
             }
 
             Log.I();
             Log.I("----------- Print Results ----------- ", ConsoleColor.Blue);
             //_summaries.ToList().ForEach(v => Log.I(v.ToString()));
-            
+            _sw.Close();
             while (true)
             { }
         }
@@ -96,6 +100,7 @@ namespace TaskSimulationCmd
             Log.I();
             Log.I("----------- Post execution calculations ----------- ", ConsoleColor.Blue);
             simulator.GetBaseData();
+            _sw.Write(simulator.GetWorkerUtilization());
             var rf = new ResultsFile($"test_{DateTime.Now.ToFileTime()}.csv", simulator.GetResults());
             rf.GenerateCsvFile();
             

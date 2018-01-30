@@ -218,10 +218,10 @@ namespace TaskSimulation.Results
 
             return sb.ToString();
         }
-        private string GetUtilization()
+        public string GetUtilization()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{"worker id"},{"worker utilization"}");
+            //sb.AppendLine($"{"worker id"},{"worker utilization"}");
 
             foreach (var keyValuePair in _workersQueue)
             {

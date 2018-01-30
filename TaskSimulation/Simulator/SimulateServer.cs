@@ -94,6 +94,10 @@ namespace TaskSimulation.Simulator
         {
             return _utilization;
         }
+        public string GetWorkerUtilization()
+        {
+            return _bData.GetUtilization();
+        }
 
         public string GetShortOutput()
         {
