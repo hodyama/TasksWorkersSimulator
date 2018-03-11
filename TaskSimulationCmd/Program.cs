@@ -51,10 +51,10 @@ namespace TaskSimulationCmd
            // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
             SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
             _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
-            for (var i = 0; i < 121; i++)
+            for (var i = 0; i < 1; i++)
             {
                 // Load the execution data for each iteration
-                var loadStatus = SimDistribution.I.LoadData(0, execData);
+                var loadStatus = SimDistribution.I.LoadData(i, execData);
 
                 if (!loadStatus)
                 {

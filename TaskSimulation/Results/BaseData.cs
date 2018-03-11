@@ -104,6 +104,7 @@ namespace TaskSimulation.Results
         {
            
             _sw = new StreamWriter($"baseData{DateTime.Now.ToFileTime()}.csv");
+           
             _sw.WriteLine("WorkersGradesAtArrivalTask");
             _sw.WriteLine(GetWorkersGradesAtArrivalTask());
             _sw.WriteLine();
@@ -128,10 +129,9 @@ namespace TaskSimulation.Results
             _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
             _sw.WriteLine(GetTimeOfStartProcessingTaskForWorker());
             _sw.WriteLine();
-            _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
-            _sw.WriteLine(GetTimeOfStartProcessingTaskForWorker());
+            _sw.WriteLine("MaenOfTasksArrivalTimesPerWorker");
             _sw.WriteLine(GetMeanRateOfTasksArrival());
-            _sw.WriteLine("TimeOfStartProcessingTaskForWorker");
+            _sw.WriteLine("Workers Utilization");
             _sw.WriteLine(GetUtilization());
             
             _sw.Close();
@@ -218,7 +218,14 @@ namespace TaskSimulation.Results
 
             return sb.ToString();
         }
-        public string GetUtilization()
+        public void Hhhh()
+        {
+            
+           
+        
+
+        }
+    public string GetUtilization()
         {
             StringBuilder sb = new StringBuilder();
             //sb.AppendLine($"{"worker id"},{"worker utilization"}");
@@ -327,8 +334,9 @@ namespace TaskSimulation.Results
         }
         private string GetMeanRateOfTasksArrival()
         {
+
             StringBuilder sb = new StringBuilder();
-            foreach (var keyValuePair in _workersFinishedTasks)
+            foreach (var keyValuePair in _workersTasks)
             {
                 var sum = 0.0;
                 sb.AppendLine($"{keyValuePair.Key },{"MeanRateOfTasksArrival"}");

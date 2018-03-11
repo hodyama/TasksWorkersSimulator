@@ -14,7 +14,7 @@ namespace TaskSimulation.Simulator.Workers
         private readonly List<Worker> _activeWorkers;
         private readonly IWorkersGenerator _workersGenerator;
         private const int NUM_OF_WORKERS_ON_TASK = 1;   // todo move to settings file
-        private const bool UPDATE_SCORE_ON_TASK_ARRIVAL_MODE = true;
+        private const bool UPDATE_SCORE_ON_TASK_ARRIVAL_MODE = false;
         private readonly IChooseWorkerAlgo _chooseAlgo;
 
         public List<Worker> ActiveWorkers => _activeWorkers;
