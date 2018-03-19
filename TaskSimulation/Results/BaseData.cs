@@ -20,6 +20,8 @@ namespace TaskSimulation.Results
         private readonly Dictionary<Worker, List<Task>> _workersTasks;
         private StreamWriter _sw;
         const int TASK_IN_PROCCESS = 1;
+        private const int WARM_UP_TIME = 100;
+        private const int BIN_LENGTH = 1;
         public BaseData()
         {
             _workersQueue = new Dictionary<Worker , Dictionary<double, int>>();
@@ -104,7 +106,11 @@ namespace TaskSimulation.Results
         {
            
             _sw = new StreamWriter($"baseData{DateTime.Now.ToFileTime()}.csv");
-           
+
+            _sw.WriteLine("WorkersGradesAtArrivalTask");
+            _sw.WriteLine(GetTasksArrivalRateByBins());
+            _sw.WriteLine();
+            
             _sw.WriteLine("WorkersGradesAtArrivalTask");
             _sw.WriteLine(GetWorkersGradesAtArrivalTask());
             _sw.WriteLine();
@@ -212,7 +218,7 @@ namespace TaskSimulation.Results
                    
                     
                 }
-                sb.AppendLine($"{keyValuePair.Key},{tl/( Simulator.SimulateServer.SimulationClock-100)}");
+                sb.AppendLine($"{keyValuePair.Key},{tl/( Simulator.SimulateServer.SimulationClock-WARM_UP_TIME)}");
 
             }
 
@@ -255,7 +261,7 @@ namespace TaskSimulation.Results
 
 
                 }
-                sb.AppendLine($"{keyValuePair.Key},{tl / (Simulator.SimulateServer.SimulationClock-100)}");
+                sb.AppendLine($"{keyValuePair.Key},{tl / (Simulator.SimulateServer.SimulationClock-WARM_UP_TIME)}");
 
             }
 
@@ -369,6 +375,41 @@ namespace TaskSimulation.Results
             }
             sb.AppendLine(sbt.ToString());
             return sb.ToString();
+        }
+        private string GetTasksArrivalRateByBins()
+        {
+            StringBuilder sbt = new StringBuilder();
+            Dictionary<Worker, List<int>> bins = new Dictionary<Worker, List<int>>();
+
+            
+            foreach (var w in _workersTasks)
+            {
+                bins.Add(w.Key, new List<int>());
+                for (var i = 0; i < (Simulator.SimulateServer.SimulationClock - WARM_UP_TIME) / BIN_LENGTH; i++)
+                    bins[w.Key].Add(0);
+                
+                
+              foreach (var t in w.Value)
+                
+                   bins[w.Key][(int)(t.CreatedTime-WARM_UP_TIME)]++;///if bins !=1?
+                    
+            }
+            sbt.Append($"{""},");
+            foreach (var w in bins)
+                sbt.Append($"{w.Key.ToString()},");
+            sbt.AppendLine();
+            for (var i = 0; i < (Simulator.SimulateServer.SimulationClock - WARM_UP_TIME) / BIN_LENGTH; i++)
+            {
+                sbt.Append($"{i+1},");
+                foreach (var w in bins)
+                    sbt.Append($"{bins[w.Key][i]},");
+                sbt.AppendLine();
+
+            }
+            
+               
+                return sbt.ToString();
+
         }
       
     }
