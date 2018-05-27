@@ -57,6 +57,7 @@
     <Compile Include="ChooseAlgorithms\NumberOfTasksInQueueGradeCalc.cs" />
     <Compile Include="ChooseAlgorithms\QueueLengthGradeCalc.cs" />
     <Compile Include="ChooseAlgorithms\OriginalGradeCalc.cs" />
+    <Compile Include="ChooseAlgorithms\WindowQueueLengthGradeCalc.cs" />
     <Compile Include="Distribution\ReflectIContinuousDistribution.cs" />
     <Compile Include="Distribution\SimDistribution.cs" />
     <Compile Include="ChooseAlgorithms\IChooseWorkerAlgo.cs" />
