@@ -78,7 +78,7 @@ namespace TaskSimulation.ChooseAlgorithms
 
             grade.Meta.WorkingTime += newDeltaTime;
 
-
+            
             //grade.ResponseGrade = LMath.AverageIncrementalSize(grade.ResponseGrade, workingTime, currentQeueuValue, newDeltaTime);
 
            

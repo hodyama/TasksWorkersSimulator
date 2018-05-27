@@ -20,7 +20,7 @@ namespace TaskSimulation.Results
         private readonly Dictionary<Worker, List<Task>> _workersTasks;
         private StreamWriter _sw;
         const int TASK_IN_PROCCESS = 1;
-        private const int WARM_UP_TIME = 100;
+        private const double WARM_UP_TIME = 4000;
         private const int BIN_LENGTH = 1;
         public BaseData()
         {
@@ -104,16 +104,28 @@ namespace TaskSimulation.Results
 
        public void CreateBaseDataFile()
         {
-           
-            _sw = new StreamWriter($"baseData{DateTime.Now.ToFileTime()}.csv");
-
-            _sw.WriteLine("WorkersGradesAtArrivalTask");
+            //move from here
+           _sw= new StreamWriter($"ArrivalRates{DateTime.Now.ToFileTime()}.csv");
+            _sw.WriteLine("Average arrivel rate to worker");
             _sw.WriteLine(GetTasksArrivalRateByBins());
             _sw.WriteLine();
+            _sw.Close();
+
+            _sw = new StreamWriter($"AvgTasksWaitingTime{DateTime.Now.ToFileTime()}.csv");
+            _sw.WriteLine("Avg Tasks Waiting Time");
+            _sw.WriteLine(GetAvgTasksWaitingTime());
+            _sw.WriteLine();
+            _sw.Close();
+
+
+            _sw = new StreamWriter($"baseData{DateTime.Now.ToFileTime()}.csv");
+
+           
             
-            _sw.WriteLine("WorkersGradesAtArrivalTask");
+           // _sw.WriteLine("WorkersGradesAtArrivalTask");
             _sw.WriteLine(GetWorkersGradesAtArrivalTask());
             _sw.WriteLine();
+            /*
             _sw.WriteLine("WorkersQueueAtTime");
             _sw.WriteLine(GetWorkersQueueAtTime());
             _sw.WriteLine();
@@ -140,6 +152,7 @@ namespace TaskSimulation.Results
             _sw.WriteLine("Workers Utilization");
             _sw.WriteLine(GetUtilization());
             
+            */
             _sw.Close();
             
         }
@@ -224,13 +237,7 @@ namespace TaskSimulation.Results
 
             return sb.ToString();
         }
-        public void Hhhh()
-        {
-            
-           
-        
-
-        }
+       
     public string GetUtilization()
         {
             StringBuilder sb = new StringBuilder();
@@ -239,8 +246,8 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersQueue)
             {
                 var q = 0;
-                var t0 = 100.0;
-                var t1 = 100.0;
+                var t0 = WARM_UP_TIME;
+                var t1 = WARM_UP_TIME;
                 var tl = 0.0;
 
                 foreach (var keyValuePair2 in keyValuePair.Value)
@@ -411,7 +418,32 @@ namespace TaskSimulation.Results
                 return sbt.ToString();
 
         }
-      
+        private string GetAvgTasksWaitingTime()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var avgW = 0.0;
+            int counter = 0;
+
+            foreach (var keyValuePair in _workersFinishedTasks)
+            {
+
+                foreach (var item in keyValuePair.Value)
+                {
+
+                    avgW += item.StartTime - item.CreatedTime;
+                    counter++;
+                }
+
+
+
+
+            }
+            sb.AppendLine($"{avgW / counter}");
+            return sb.ToString();
+        }
+
+
     }
 }
 

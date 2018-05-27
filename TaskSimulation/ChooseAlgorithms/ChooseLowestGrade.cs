@@ -13,6 +13,7 @@ namespace TaskSimulation.ChooseAlgorithms
             var workers = activeWorkers
                 .OrderBy(w => w.Grade.TotalGrade)
                 .ThenBy(w => w.Grade.NumberOfTasksGrade)
+                .ThenBy(w => Guid.NewGuid())
                 .Take(chooseNum).ToList();
 
             return workers;
