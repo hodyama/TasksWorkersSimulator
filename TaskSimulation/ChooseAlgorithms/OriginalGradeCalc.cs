@@ -26,14 +26,14 @@ namespace TaskSimulation.ChooseAlgorithms
             return grade;
         }
 
-        public Grade UpdateOnTaskAdd(Grade grade)
+        public Grade UpdateOnTaskAdd(Grade grade, Worker w)
         {
             grade.NumberOfTasksGrade--;
             grade.TotalGrade = CalculateFinalGrade(grade);
 
             return grade;
         }
-        public Grade UpdateOnTaskArrival(Grade grade)
+        public Grade UpdateOnTaskArrival(Grade grade, Worker w)
         {
             
             grade.TotalGrade = CalculateFinalGrade(grade);

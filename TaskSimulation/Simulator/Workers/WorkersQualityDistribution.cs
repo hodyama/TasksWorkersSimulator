@@ -13,6 +13,8 @@ namespace TaskSimulation.Simulator.Workers
         public IContinuousDistribution ProcessingMean { get; set; }
         public IContinuousDistribution ProcessingStd { get; set; }
 
+       // public int NUM_OF_WORKERS;
+
         public bool Validate()
         {
             return FeedbackMean != null && FeedbackStd != null &&

@@ -8,7 +8,12 @@ namespace TaskSimulation.ChooseAlgorithms
 {
     public class WindowQueueLengthGradeCalc : IGradeCalcAlgo
     {
-        const int TASKS_IN_PROSS = 1;
+       const int TASKS_IN_PROSS = 1;
+       private double window;
+       public  WindowQueueLengthGradeCalc(double w)
+        {
+            window = w;
+        }
 
         public Grade InitialGrade()
         {
@@ -24,18 +29,18 @@ namespace TaskSimulation.ChooseAlgorithms
             return grade;
         }
 
-        public Grade UpdateOnTaskAdd(Grade grade)
+        public Grade UpdateOnTaskAdd(Grade grade, Worker worker)
         {
             // TODO add to metadata as NumberOfTasks
 
-            UpdateQueueGrade(ref grade);
+            UpdateQueueGrade(ref grade, worker);
             grade.NumberOfTasksGrade++;
 
             return grade;
         }
-        public Grade UpdateOnTaskArrival(Grade grade)
+        public Grade UpdateOnTaskArrival(Grade grade, Worker worker )
         {
-            UpdateQueueGrade(ref grade);
+            UpdateQueueGrade(ref grade, worker);
             return grade;
 
         }
@@ -43,7 +48,7 @@ namespace TaskSimulation.ChooseAlgorithms
         {
             var grade = worker.Grade;
 
-            UpdateQueueGrade(ref grade);
+            UpdateQueueGrade(ref grade, worker);
 
             grade.NumberOfTasksGrade--;
 
@@ -61,7 +66,7 @@ namespace TaskSimulation.ChooseAlgorithms
         /// QueueAvarage = TODO Need to normalize the QueueTime
         /// </summary>
         /// <param name="grade"></param>
-        private void UpdateQueueGrade(ref Grade grade)
+        private void UpdateQueueGrade(ref Grade grade, Worker w)
         {
             // TODO ask, is this Queue length or Total execution time
             var currentTime = Simulator.SimulateServer.SimulationClock;
@@ -82,8 +87,11 @@ namespace TaskSimulation.ChooseAlgorithms
 
             //grade.ResponseGrade = LMath.AverageIncrementalSize(grade.ResponseGrade, workingTime, currentQeueuValue, newDeltaTime);
 
+            if (currentTime<window)
 
-            grade.ResponseGrade = sum / currentTime;
+                 grade.ResponseGrade = Simulator.SimulateServer.GetWorkerWindowTL(w,0) / currentTime;
+            else
+                grade.ResponseGrade = Simulator.SimulateServer.GetWorkerWindowTL(w, currentTime-window) / window;
 
             grade.TotalGrade = grade.ResponseGrade; // TODO add FeedbackGrade
             grade.Meta.tl = sum;

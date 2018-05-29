@@ -44,14 +44,15 @@ namespace TaskSimulationCmd
 
             var executions = execData.Executions.Length;
             _summaries = new ExecutionSummary[executions];
-           
+
             // TODO move grade system to file
             //SimDistribution.I.GradeSystem = new OriginalGradeCalc();
+            SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(6);
+            // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
            // SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
-            SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
             SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
             _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i <executions ; i++)
             {
                 // Load the execution data for each iteration
                 var loadStatus = SimDistribution.I.LoadData(i, execData);
@@ -62,8 +63,8 @@ namespace TaskSimulationCmd
                     return;
                 }
 
-                var initialNumOfWorkers = execData.Executions[0].InitialNumOfWorkers;
-                var maxSimulationTime   = execData.Executions[0].MaxSimulationTime;
+                var initialNumOfWorkers = execData.Executions[i].InitialNumOfWorkers;
+                var maxSimulationTime   = execData.Executions[i].MaxSimulationTime;
 
                 Log.I($"------------ Simulation Execution {i} ------------", ConsoleColor.DarkCyan);
 
@@ -83,8 +84,8 @@ namespace TaskSimulationCmd
             Log.I("----------- Print Results ----------- ", ConsoleColor.Blue);
             //_summaries.ToList().ForEach(v => Log.I(v.ToString()));
             _sw.Close();
-           // while (true)
-            //{ }
+            while (true)
+            { }
         }
 
         public static string SingleExecution(double time, long workers)

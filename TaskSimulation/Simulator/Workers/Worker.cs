@@ -19,7 +19,7 @@ namespace TaskSimulation.Simulator.Workers
             _id = id;
             _tasks = new TasksQueue();
             Statistics = new WorkerExecData();
-            Distribution = new WorkerDistribution(qualies);
+            Distribution = new WorkerDistribution(qualies,id);
             Grade = SimDistribution.I.GradeSystem.InitialGrade();
         }
 
@@ -35,7 +35,7 @@ namespace TaskSimulation.Simulator.Workers
 
             task.SetStateAddedTo(this);
 
-            Grade = SimDistribution.I.GradeSystem.UpdateOnTaskAdd(Grade);
+            Grade = SimDistribution.I.GradeSystem.UpdateOnTaskAdd(Grade,this);
 
             ContinueToNextTask();
         }

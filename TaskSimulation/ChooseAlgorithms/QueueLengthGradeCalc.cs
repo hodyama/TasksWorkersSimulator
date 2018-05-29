@@ -23,7 +23,7 @@ namespace TaskSimulation.ChooseAlgorithms
             return grade;
         }
 
-        public Grade UpdateOnTaskAdd(Grade grade)
+        public Grade UpdateOnTaskAdd(Grade grade, Worker w)
         {
             // TODO add to metadata as NumberOfTasks
 
@@ -32,8 +32,9 @@ namespace TaskSimulation.ChooseAlgorithms
 
             return grade;
         }
-        public Grade UpdateOnTaskArrival(Grade grade)
+        public Grade UpdateOnTaskArrival(Grade grade, Worker w)
         {
+            
             UpdateQueueGrade(ref grade);
             return grade;
 
@@ -41,7 +42,7 @@ namespace TaskSimulation.ChooseAlgorithms
         public Grade UpdateOnTaskRemoved(Worker worker, Task task) //WORKER TASK
         {
             var grade = worker.Grade;
-
+            
             UpdateQueueGrade(ref grade);
 
             grade.NumberOfTasksGrade--; 
@@ -64,7 +65,7 @@ namespace TaskSimulation.ChooseAlgorithms
         {
             // TODO ask, is this Queue length or Total execution time
             var currentTime = Simulator.SimulateServer.SimulationClock;
-
+            
             var workingTime = grade.Meta.WorkingTime;
 
             var sum = grade.Meta.tl;

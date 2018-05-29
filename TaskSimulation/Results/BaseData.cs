@@ -122,10 +122,10 @@ namespace TaskSimulation.Results
 
            
             
-           // _sw.WriteLine("WorkersGradesAtArrivalTask");
+            _sw.WriteLine("WorkersGradesAtArrivalTask");
             _sw.WriteLine(GetWorkersGradesAtArrivalTask());
             _sw.WriteLine();
-            /*
+            
             _sw.WriteLine("WorkersQueueAtTime");
             _sw.WriteLine(GetWorkersQueueAtTime());
             _sw.WriteLine();
@@ -151,8 +151,11 @@ namespace TaskSimulation.Results
             _sw.WriteLine(GetMeanRateOfTasksArrival());
             _sw.WriteLine("Workers Utilization");
             _sw.WriteLine(GetUtilization());
-            
-            */
+            _sw.WriteLine("Avg Tasks Waiting Time");
+            _sw.WriteLine(GetAvgTasksWaitingTime());
+            _sw.WriteLine();
+
+
             _sw.Close();
             
         }
@@ -165,15 +168,18 @@ namespace TaskSimulation.Results
             
             foreach (var keyValuePair in _workersGradesAtArrivalTask)
             {
-                sb.Append($"{keyValuePair.Key},");
-                tmp = "";
-               
-                foreach (var kv in keyValuePair.Value)
+                if (keyValuePair.Key > WARM_UP_TIME)
                 {
-                    tmp+=$"{kv.Key+"Score"},";
-                    sb.Append($"{kv.Value},");
+                    sb.Append($"{keyValuePair.Key},");
+                    tmp = "";
+
+                    foreach (var kv in keyValuePair.Value)
+                    {
+                        tmp += $"{kv.Key + "Score"},";
+                        sb.Append($"{kv.Value},");
+                    }
+                    sb.AppendLine();
                 }
-                sb.AppendLine();
             }
             title.AppendLine(tmp);
             title.AppendLine(sb.ToString());
@@ -191,12 +197,15 @@ namespace TaskSimulation.Results
                 sb.AppendLine($"{"time"},{keyValuePair.Key+" queueLength"}");
                 foreach (var keyValuePair2 in keyValuePair.Value)
                 {
-                    var queueLength = keyValuePair2.Value - TASK_IN_PROCCESS;
-                    if (queueLength < 0)
-                        queueLength = 0;
-                    sb.AppendLine($"{keyValuePair2.Key},{tmp}");
-                    sb.AppendLine($"{keyValuePair2.Key},{queueLength}");
-                    tmp = queueLength;
+                    if (keyValuePair2.Key > WARM_UP_TIME)
+                    {
+                        var queueLength = keyValuePair2.Value - TASK_IN_PROCCESS;
+                        if (queueLength < 0)
+                            queueLength = 0;
+                        sb.AppendLine($"{keyValuePair2.Key},{tmp}");
+                        sb.AppendLine($"{keyValuePair2.Key},{queueLength}");
+                        tmp = queueLength;
+                    }
                 }
             }
             return sb.ToString();
@@ -209,27 +218,30 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersQueue)
             {
                 var q = 0;
-                var t0 = 100.0;
-                var t1 = 100.0;
+                var t0 = WARM_UP_TIME;
+                var t1 = WARM_UP_TIME;
                 var tl = 0.0;
                 
                 foreach (var keyValuePair2 in keyValuePair.Value)
                 {
                     t1 = keyValuePair2.Key;
-                    var tmpq= keyValuePair2.Value-1;
-                    if (tmpq < 0)
-                        tmpq = 0;
-                    if(tmpq!=q)
+                    if (t1 > t0)
                     {
+                        var tmpq = keyValuePair2.Value - TASK_IN_PROCCESS;
+                        if (tmpq < 0)
+                            tmpq = 0;
+                        if (tmpq != q)
+                        {
 
-                        
-                        tl +=  q * (t1 - t0);
-                        t0 = keyValuePair2.Key;
-                       
-                        q = tmpq;
+
+                            tl += q * (t1 - t0);
+                            t0 = keyValuePair2.Key;
+
+                            q = tmpq;
+                        }
                     }
-                   
-                    
+
+
                 }
                 sb.AppendLine($"{keyValuePair.Key},{tl/( Simulator.SimulateServer.SimulationClock-WARM_UP_TIME)}");
 
@@ -237,8 +249,41 @@ namespace TaskSimulation.Results
 
             return sb.ToString();
         }
-       
-    public string GetUtilization()
+        public double GetWorkerWindowTL( Worker w, double start_time)
+        {
+           
+                var q = 0;
+                var t0 = start_time;
+                var t1 = start_time;
+                var tl = 0.0;
+
+                foreach (var keyValuePair2 in _workersQueue[w])
+                {
+                    t1 = keyValuePair2.Key;
+                    if (t1 > t0)
+                    {
+                         var tmpq = keyValuePair2.Value - TASK_IN_PROCCESS;
+                         if (tmpq < 0)
+                             tmpq = 0;
+                        if (tmpq != q)
+                        {
+
+
+                            tl += q * (t1 - t0);
+                            t0 = keyValuePair2.Key;
+
+                            q = tmpq;
+                        }
+                     }
+
+
+                }
+               
+
+             return tl;
+        }
+
+        public string GetUtilization()
         {
             StringBuilder sb = new StringBuilder();
             //sb.AppendLine($"{"worker id"},{"worker utilization"}");
@@ -253,20 +298,22 @@ namespace TaskSimulation.Results
                 foreach (var keyValuePair2 in keyValuePair.Value)
                 {
                     t1 = keyValuePair2.Key;
-                    var tmpq = keyValuePair2.Value ;
-                    if (tmpq != 0)
-                        tmpq = 1;
-                    if (tmpq != q)
+                    if (t1 > t0)
                     {
+                        var tmpq = keyValuePair2.Value;
+                        if (tmpq != 0)
+                            tmpq = 1;
+                        if (tmpq != q)
+                        {
 
 
-                        tl += q * (t1 - t0);
-                        t0 = keyValuePair2.Key;
+                            tl += q * (t1 - t0);
+                            t0 = keyValuePair2.Key;
 
-                        q = tmpq;
+                            q = tmpq;
+                        }
+
                     }
-
-
                 }
                 sb.AppendLine($"{keyValuePair.Key},{tl / (Simulator.SimulateServer.SimulationClock-WARM_UP_TIME)}");
 
@@ -284,13 +331,16 @@ namespace TaskSimulation.Results
                 sb.AppendLine($"{"time"},{keyValuePair.Key + "Busy"}");
                 foreach (var keyValuePair2 in keyValuePair.Value)
                 {
-                    var busy= keyValuePair2.Value ;
-                    if (busy != 0)
-                
-                        busy = 1;
-                    sb.AppendLine($"{keyValuePair2.Key},{tmp}");
-                    sb.AppendLine($"{keyValuePair2.Key},{busy}");
-                    tmp = busy;
+                    if (keyValuePair2.Key > WARM_UP_TIME)
+                    {
+                        var busy = keyValuePair2.Value;
+                        if (busy != 0)
+
+                            busy = 1;
+                        sb.AppendLine($"{keyValuePair2.Key},{tmp}");
+                        sb.AppendLine($"{keyValuePair2.Key},{busy}");
+                        tmp = busy;
+                    }
                 }
             }
             return sb.ToString();
@@ -304,13 +354,18 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersFinishedTasks)
             {
                 var avgP = 0.0;
+                var counter = 0;
                 sb.AppendLine($"{keyValuePair.Key+"tasks"},{"task processing time"}");
                 foreach (var item in keyValuePair.Value)
                 {
-                    avgP += item.EndTime - item.StartTime;
-                    sb.AppendLine($"{item.GetTaskId()},{item.EndTime - item.StartTime}");
+                    if (item.CreatedTime > WARM_UP_TIME)
+                    {
+                        counter++;
+                        avgP += item.EndTime - item.StartTime;
+                        sb.AppendLine($"{item.GetTaskId()},{item.EndTime - item.StartTime}");
+                    }
                 }
-                sbt.AppendLine($"{keyValuePair.Key.GetWorkerID()},{avgP/keyValuePair.Value.Count}");
+                sbt.AppendLine($"{keyValuePair.Key.GetWorkerID()},{avgP/counter}");
 
 
             }
@@ -325,7 +380,7 @@ namespace TaskSimulation.Results
             {
                 sb.AppendLine($"{keyValuePair.Key + "tasks"},{"time of start processing task"}");
                 foreach (var item in keyValuePair.Value)
-
+                    if(item.CreatedTime>WARM_UP_TIME)
                     sb.AppendLine($"{item.GetTaskId()},{ item.StartTime}");
 
             }
@@ -338,7 +393,20 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersTasks)
             {
                 sb.AppendLine($"{keyValuePair.Key + "AllocatedTasks"},{"FinishedTasks"}");
-                sb.AppendLine($"{keyValuePair.Value.Count},{_workersFinishedTasks[keyValuePair.Key].Count}");
+                var alloc= 0;
+                var finish = 0;
+                foreach( var item in keyValuePair.Value)
+                {
+                    if (item.CreatedTime > WARM_UP_TIME)
+                        alloc++;
+                }
+                foreach (var item in _workersFinishedTasks[keyValuePair.Key])
+                {
+                    if (item.CreatedTime > WARM_UP_TIME)
+                        finish++;
+                }
+
+                sb.AppendLine($"{alloc},{finish}");
 
                
 
@@ -352,11 +420,17 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersTasks)
             {
                 var sum = 0.0;
+                var counter = 0;
                 sb.AppendLine($"{keyValuePair.Key },{"MeanRateOfTasksArrival"}");
                 foreach (var item in keyValuePair.Value)
-                    sum += item.CreatedTime;
-
-                sb.AppendLine($"{sum/keyValuePair.Value.Count}");
+                {
+                    if (item.CreatedTime > WARM_UP_TIME)
+                    {
+                        sum += item.CreatedTime;
+                        counter++;
+                    }
+                }
+                sb.AppendLine($"{sum/counter}");
                 
 
             }
@@ -371,13 +445,18 @@ namespace TaskSimulation.Results
             foreach (var keyValuePair in _workersFinishedTasks)
             {
                 var avgW = 0.0;
+                var counter = 0;
                 sb.AppendLine($"{keyValuePair.Key + "tasks"},{"task waiting time"}");
                 foreach (var item in keyValuePair.Value)
                 {
-                    avgW += item.StartTime - item.CreatedTime;
-                    sb.AppendLine($"{item.GetTaskId()},{item.StartTime - item.CreatedTime}");
+                    if (item.CreatedTime > WARM_UP_TIME)
+                    {
+                        avgW += item.StartTime - item.CreatedTime;
+                        sb.AppendLine($"{item.GetTaskId()},{item.StartTime - item.CreatedTime}");
+                        counter++;
+                    }
                 }
-                sbt.AppendLine($"{keyValuePair.Key.GetWorkerID()},{avgW / keyValuePair.Value.Count}");
+                sbt.AppendLine($"{keyValuePair.Key.GetWorkerID()},{avgW / counter}");
 
             }
             sb.AppendLine(sbt.ToString());
@@ -397,7 +476,7 @@ namespace TaskSimulation.Results
                 
                 
               foreach (var t in w.Value)
-                
+                if(t.CreatedTime>WARM_UP_TIME)
                    bins[w.Key][(int)(t.CreatedTime-WARM_UP_TIME)]++;///if bins !=1?
                     
             }
@@ -430,9 +509,11 @@ namespace TaskSimulation.Results
 
                 foreach (var item in keyValuePair.Value)
                 {
-
-                    avgW += item.StartTime - item.CreatedTime;
-                    counter++;
+                    if (item.CreatedTime > WARM_UP_TIME)
+                    {
+                        avgW += item.StartTime - item.CreatedTime;
+                        counter++;
+                    }
                 }
 
 

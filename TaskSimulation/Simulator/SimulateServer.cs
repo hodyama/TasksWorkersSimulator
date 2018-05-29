@@ -10,18 +10,20 @@ namespace TaskSimulation.Simulator
     {
         public static double SimulationClock { get; private set; } // TNOW
         public static double SimulatorMaxRunTime { get; private set; }
-
+        private static BaseData _bData;
+       // private const double WARM_UP_TIME = 100;
 
         private readonly TasksJournal _tasksJournal;
         private readonly WorkersJournal _workersJournal;
         private readonly SimulationEventMan _simulationEvents;
         private readonly Utilization _utilization;// { get; private set; }
         private readonly DebugSimpleOutput _dbPrint;
-        private readonly BaseData _bData;
-        private const double WARM_UP_TIME= 4000;
+       // private readonly BaseData _bData;
+        
 
         public SimulateServer(double maxSimulationTime = Int32.MaxValue)
         {
+            
             _simulationEvents = new SimulationEventMan();
             SimulationClock = 0;
             SimulatorMaxRunTime = maxSimulationTime;
@@ -61,7 +63,7 @@ namespace TaskSimulation.Simulator
                 if (nextEvent is TaskArrivalEvent || nextEvent is TaskFinishedEvent)
                 {
                     nextEvent.Accept(_tasksJournal);
-                    if(SimulationClock>WARM_UP_TIME)
+                    //if(SimulationClock>WARM_UP_TIME)
                         nextEvent.Accept(_bData);
                     nextEvent.Accept(_workersJournal);
                 }
@@ -103,9 +105,13 @@ namespace TaskSimulation.Simulator
         {
             return _dbPrint.ToString();
         }
-        public void GetBaseData()
+        public  void GetBaseData()
         {
              _bData.CreateBaseDataFile();
+        }
+        public  static double GetWorkerWindowTL(Worker w, double start_time)
+        {
+            return _bData.GetWorkerWindowTL( w,  start_time);
         }
 
         public void PrintSimulationState()

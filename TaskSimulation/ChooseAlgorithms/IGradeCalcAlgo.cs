@@ -7,9 +7,9 @@ namespace TaskSimulation.ChooseAlgorithms
     {
         Grade InitialGrade();
 
-        Grade UpdateOnTaskAdd(Grade grade);
+        Grade UpdateOnTaskAdd(Grade grade, Worker worker);
 
-        Grade UpdateOnTaskArrival(Grade grade);
+        Grade UpdateOnTaskArrival(Grade grade, Worker worker);
 
         Grade UpdateOnTaskRemoved(Worker worker, Task task);
 
