@@ -20,7 +20,7 @@ namespace TaskSimulation.Results
         private readonly Dictionary<Worker, List<Task>> _workersTasks;
         private StreamWriter _sw;
         const int TASK_IN_PROCCESS = 1;
-        private const double WARM_UP_TIME = 4000;
+        private const double WARM_UP_TIME = 0;
         private const int BIN_LENGTH = 1;
         public BaseData()
         {

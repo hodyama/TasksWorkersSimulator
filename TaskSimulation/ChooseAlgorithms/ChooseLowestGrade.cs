@@ -11,11 +11,11 @@ namespace TaskSimulation.ChooseAlgorithms
     {
         public List<Worker> ChooseWorkers(List<Worker> activeWorkers, int chooseNum)
         {
-            var r = new Random(SimDistribution.I.GlobalSeed);
+           // var r = new Random(SimDistribution.I.GlobalSeed);
             var workers = activeWorkers
                 .OrderBy(w => w.Grade.TotalGrade)
                 .ThenBy(w => w.Grade.NumberOfTasksGrade)
-                .ThenBy(w => r.Next())
+                .ThenBy(w => Guid.NewGuid())
                 .Take(chooseNum).ToList();
 
             return workers;

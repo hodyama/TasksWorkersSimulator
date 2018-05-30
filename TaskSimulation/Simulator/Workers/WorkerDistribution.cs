@@ -23,23 +23,24 @@ namespace TaskSimulation.Simulator.Workers
             JobQuality      = new Normal(qualies.QualityMean,  qualies.QualityStd,  privateRandom);
             // ResponseTime    = new Normal(qualies.ResponseMean,  qualies.ResponseStd,  privateRandom);
 
-            //ResponseTime = new Exponential(qualies.ResponseMean,  privateRandom);
+            // ResponseTime = new Exponential(qualies.ResponseMean,  privateRandom);
+            ResponseTime = new Exponential(0.416, privateRandom);
 
-             // ResponseTime = new Exponential((id)*0.21,  privateRandom);
+            // ResponseTime = new Exponential((id)*0.21,  privateRandom);
 
-            if (id < 35)
-                ResponseTime = new Exponential((5 / 796), privateRandom);
-            else
-            {
-                if (id < 68)
-                    ResponseTime = new Exponential((2 * (5 / 796)), privateRandom);
-                else
-                    ResponseTime = new Exponential((3 * (5 / 796)), privateRandom);
-            }
+            /*  if (id < 35)
+                  ResponseTime = new Exponential(0.0125/2, privateRandom);
+              else
+              {
+                  if (id < 68)
+                      ResponseTime = new Exponential(0.0125, privateRandom);
+                  else
+                      ResponseTime = new Exponential(0.0125*2, privateRandom);
+              }*/
 
 
 
-            }
+        }
 
         public WorkerDistribution(IContinuousDistribution feedback, IContinuousDistribution jobQuality, IContinuousDistribution responseTime)
         {
