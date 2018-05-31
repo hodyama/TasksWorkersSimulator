@@ -74,7 +74,8 @@ namespace TaskSimulation.ChooseAlgorithms
             var workingTime = grade.Meta.WorkingTime;
 
             var sum = grade.Meta.tl;
-            var currentQeueuValue = (grade.NumberOfTasksGrade - TASKS_IN_PROSS);
+            //var currentQeueuValue = (grade.NumberOfTasksGrade - TASKS_IN_PROSS);
+            var currentQeueuValue = (grade.NumberOfTasksGrade);
             if (currentQeueuValue < 0)
                 currentQeueuValue = 0;
             var newDeltaTime = currentTime - grade.Meta.LastModifiedAt;

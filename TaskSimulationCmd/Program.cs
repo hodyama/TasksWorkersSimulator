@@ -47,9 +47,9 @@ namespace TaskSimulationCmd
 
             // TODO move grade system to file
             //SimDistribution.I.GradeSystem = new OriginalGradeCalc();
-           // SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(6);
+            SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(2);
             // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
-            SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
+            //SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
             SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
             _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
             for (var i = 0; i <executions ; i++)

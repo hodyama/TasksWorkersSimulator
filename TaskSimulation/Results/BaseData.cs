@@ -54,19 +54,22 @@ namespace TaskSimulation.Results
                  
             }*/
 
+
             
             task.OnAddedToWorker += w =>
             {
-               
-               var queueLength = w.Grade.NumberOfTasksGrade;
-               _workersQueue[w].Add(time, queueLength+1);
+
+                var queueLength = w.Grade.NumberOfTasksGrade;
+                _workersQueue[w].Add(time, queueLength + 1);
                 _workersTasks[w].Add(task);
                 _workersGradesAtArrivalTask.Add(time, new Dictionary<Worker, double>());
 
 
                 foreach (var keyValuePair in _workersQueue)
+                {
                     _workersGradesAtArrivalTask[time].Add(keyValuePair.Key, keyValuePair.Key.Grade.TotalGrade);
 
+                }
             };
 
             task.OnTaskAssigned += w =>
@@ -199,7 +202,8 @@ namespace TaskSimulation.Results
                 {
                     if (keyValuePair2.Key > WARM_UP_TIME)
                     {
-                        var queueLength = keyValuePair2.Value - TASK_IN_PROCCESS;
+                        //var queueLength = keyValuePair2.Value - TASK_IN_PROCCESS;
+                        var queueLength = keyValuePair2.Value ;
                         if (queueLength < 0)
                             queueLength = 0;
                         sb.AppendLine($"{keyValuePair2.Key},{tmp}");
@@ -227,7 +231,9 @@ namespace TaskSimulation.Results
                     t1 = keyValuePair2.Key;
                     if (t1 > t0)
                     {
-                        var tmpq = keyValuePair2.Value - TASK_IN_PROCCESS;
+                      //  var tmpq = keyValuePair2.Value - TASK_IN_PROCCESS;
+                        var tmpq = keyValuePair2.Value;
+
                         if (tmpq < 0)
                             tmpq = 0;
                         if (tmpq != q)
@@ -260,10 +266,15 @@ namespace TaskSimulation.Results
                 foreach (var keyValuePair2 in _workersQueue[w])
                 {
                     t1 = keyValuePair2.Key;
-                    if (t1 > t0)
-                    {
-                         var tmpq = keyValuePair2.Value - TASK_IN_PROCCESS;
-                         if (tmpq < 0)
+                    if (t1 <= t0)
+
+                    
+                            q = keyValuePair2.Value;
+                         //var tmpq = keyValuePair2.Value - TASK_IN_PROCCESS;
+                         //var tmpq = keyValuePair2.Value;
+                   else{
+                    var tmpq = keyValuePair2.Value;
+                    if (tmpq < 0)
                              tmpq = 0;
                         if (tmpq != q)
                         {
@@ -280,7 +291,7 @@ namespace TaskSimulation.Results
                 }
                
 
-             return tl;
+             return tl+ q * (Simulator.SimulateServer.SimulationClock-t1);
         }
 
         public string GetUtilization()

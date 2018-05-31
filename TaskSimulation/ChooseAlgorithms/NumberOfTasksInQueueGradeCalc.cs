@@ -60,7 +60,32 @@ namespace TaskSimulation.ChooseAlgorithms
             grade.ResponseGrade = grade.NumberOfTasksGrade;
 
             grade.TotalGrade = grade.ResponseGrade; // TODO add FeedbackGrade
-          
+
+
+            var currentTime = Simulator.SimulateServer.SimulationClock;
+
+            var workingTime = grade.Meta.WorkingTime;
+
+            var sum = grade.Meta.tl;
+            //var currentQeueuValue = (grade.NumberOfTasksGrade - TASKS_IN_PROSS);
+            var currentQeueuValue = (grade.NumberOfTasksGrade);
+            if (currentQeueuValue < 0)
+                currentQeueuValue = 0;
+            var newDeltaTime = currentTime - grade.Meta.LastModifiedAt;
+            if (newDeltaTime <= 0)
+                return;
+            sum += currentQeueuValue * newDeltaTime;
+
+            grade.Meta.WorkingTime += newDeltaTime;
+
+           
+            grade.Meta.tl = sum;
+
+            grade.Meta.LastModifiedAt = Simulator.SimulateServer.SimulationClock;
+
+
+
+
 
         }
     }
