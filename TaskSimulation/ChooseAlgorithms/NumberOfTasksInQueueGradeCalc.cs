@@ -19,7 +19,7 @@ namespace TaskSimulation.ChooseAlgorithms
                 FeedbackGrade = 0,
                 QualityGrade = 0,
                 ResponseGrade = 0,
-                NumberOfTasksGrade = 0,
+                
             };
 
             return grade;
@@ -28,7 +28,7 @@ namespace TaskSimulation.ChooseAlgorithms
         public Grade UpdateOnTaskAdd(Grade grade, Worker w)
         {
             // TODO add to metadata as NumberOfTasks
-            grade.NumberOfTasksGrade++;
+            grade.Meta.NumberOfTasks++;
             UpdateQueueGrade(ref grade);
 
             return grade;
@@ -42,7 +42,7 @@ namespace TaskSimulation.ChooseAlgorithms
         public Grade UpdateOnTaskRemoved(Worker worker, Task task) //WORKER TASK
         {
             var grade = worker.Grade;
-            grade.NumberOfTasksGrade--;
+            grade.Meta.NumberOfTasks--;
             UpdateQueueGrade(ref grade);
 
             return grade;
@@ -57,36 +57,9 @@ namespace TaskSimulation.ChooseAlgorithms
         private void UpdateQueueGrade(ref Grade grade)
         {
         
-            grade.ResponseGrade = grade.NumberOfTasksGrade;
+            grade.ResponseGrade = grade.Meta.NumberOfTasks;
 
             grade.TotalGrade = grade.ResponseGrade; // TODO add FeedbackGrade
-
-
-            var currentTime = Simulator.SimulateServer.SimulationClock;
-
-            var workingTime = grade.Meta.WorkingTime;
-
-            var sum = grade.Meta.tl;
-            //var currentQeueuValue = (grade.NumberOfTasksGrade - TASKS_IN_PROSS);
-            var currentQeueuValue = (grade.NumberOfTasksGrade);
-            if (currentQeueuValue < 0)
-                currentQeueuValue = 0;
-            var newDeltaTime = currentTime - grade.Meta.LastModifiedAt;
-            if (newDeltaTime <= 0)
-                return;
-            sum += currentQeueuValue * newDeltaTime;
-
-            grade.Meta.WorkingTime += newDeltaTime;
-
-           
-            grade.Meta.tl = sum;
-
-            grade.Meta.LastModifiedAt = Simulator.SimulateServer.SimulationClock;
-
-
-
-
-
         }
     }
 }

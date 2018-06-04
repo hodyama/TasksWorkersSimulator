@@ -18,9 +18,10 @@ namespace TaskSimulation.ChooseAlgorithms
                 FeedbackGrade = INITIAL_GRADE,
                 QualityGrade = INITIAL_GRADE,
                 ResponseGrade = INITIAL_GRADE,
-                NumberOfTasksGrade = MAX_NUMBER_OF_TASKS,
-            };
+                
 
+        };
+            grade.Meta.NumberOfTasks = MAX_NUMBER_OF_TASKS;
             grade.TotalGrade = CalculateFinalGrade(grade);
 
             return grade;
@@ -28,7 +29,7 @@ namespace TaskSimulation.ChooseAlgorithms
 
         public Grade UpdateOnTaskAdd(Grade grade, Worker w)
         {
-            grade.NumberOfTasksGrade--;
+            grade.Meta.NumberOfTasks--;
             grade.TotalGrade = CalculateFinalGrade(grade);
 
             return grade;
@@ -46,7 +47,7 @@ namespace TaskSimulation.ChooseAlgorithms
         {
             var grade = worker.Grade;
 
-            grade.NumberOfTasksGrade++;
+            grade.Meta.NumberOfTasks++;
 
             grade = CalculateNewGrade(worker, task);
 
@@ -82,14 +83,14 @@ namespace TaskSimulation.ChooseAlgorithms
             Log.D($"Grade Updated (R, F, Q, N, G)" +
                               $" Prev ({prevResponseGrade},{prevFeedbackGrade},{prevQualityGrade},x,{prevTotal})" +
                               $" New  ({grade.ResponseGrade},{(int)newFeedbackGrade},{(int)newQualityGrade},x ,x)" +
-                              $" Final({grade.ResponseGrade},{grade.FeedbackGrade},{grade.QualityGrade},{grade.NumberOfTasksGrade},{grade.TotalGrade})");
+                              $" Final({grade.ResponseGrade},{grade.FeedbackGrade},{grade.QualityGrade},{grade.Meta.NumberOfTasks},{grade.TotalGrade})");
 
             return grade;
         }
 
         private double CalculateFinalGrade(Grade grade)
         {
-            var sum = grade.FeedbackGrade + grade.QualityGrade + grade.ResponseGrade + grade.NumberOfTasksGrade;
+            var sum = grade.FeedbackGrade + grade.QualityGrade + grade.ResponseGrade + grade.Meta.NumberOfTasks;
             var totalGrade = sum / Grade.NUMBER_OF_VARS;
 
             return totalGrade;

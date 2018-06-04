@@ -12,7 +12,7 @@ namespace TaskSimulation.ChooseAlgorithms
         {
             var workers = activeWorkers
                 .OrderByDescending(w => w.Grade.TotalGrade)
-                .ThenByDescending(w => w.Grade.NumberOfTasksGrade)
+                .ThenByDescending(w => w.Grade.Meta.NumberOfTasks)
                 .ThenBy(w => Guid.NewGuid())
                 .Take(chooseNum).ToList();
 

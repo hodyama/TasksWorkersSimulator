@@ -21,9 +21,7 @@ namespace TaskSimulationCmd
         // - When worker leave, the task is NOT reassigned
         // - If worker leave during task execution the "BusyTime" is not updated
         // Questions:
-        // - What to show in the graphs?
-        // - What is the implementation of the Grade calculation?
-        // - What are the parameters for the Distributions?
+        
         // - What will happen to all the tasks in the workers queue when worker leave???
         // TODOs
         // - Add Personal seed and params for workers grade
@@ -47,9 +45,10 @@ namespace TaskSimulationCmd
 
             // TODO move grade system to file
             //SimDistribution.I.GradeSystem = new OriginalGradeCalc();
-            SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(2);
+            SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(6);
             // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
             //SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
+
             SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
             _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
             for (var i = 0; i <executions ; i++)

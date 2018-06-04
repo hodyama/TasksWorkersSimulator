@@ -27,16 +27,28 @@ namespace TaskSimulation.Simulator.Workers
             ResponseTime = new Exponential(0.416, privateRandom);
 
             // ResponseTime = new Exponential((id)*0.21,  privateRandom);
+           /* if (id ==1)
+                ResponseTime = new Exponential(0.21, privateRandom);
+            if (id == 2)
+                ResponseTime = new Exponential(2*0.21, privateRandom);
+            if (id == 3)
+                ResponseTime = new Exponential(4*0.21, privateRandom);
+            /* else
+             {
+                 if (id < 68)
+                     ResponseTime = new Exponential(0.0125, privateRandom);
+                 else
+                     ResponseTime = new Exponential(0.0125 * 2, privateRandom);
 
-            /*  if (id < 35)
-                  ResponseTime = new Exponential(0.0125/2, privateRandom);
-              else
-              {
-                  if (id < 68)
-                      ResponseTime = new Exponential(0.0125, privateRandom);
-                  else
-                      ResponseTime = new Exponential(0.0125*2, privateRandom);
-              }*/
+                 /*  if (id < 35)
+                       ResponseTime = new Exponential(0.0125/2, privateRandom);
+                   else
+                   {
+                       if (id < 68)
+                           ResponseTime = new Exponential(0.0125, privateRandom);
+                       else
+                           ResponseTime = new Exponential(0.0125*2, privateRandom);
+                   }*/
 
 
 

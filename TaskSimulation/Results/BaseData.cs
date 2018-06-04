@@ -59,7 +59,7 @@ namespace TaskSimulation.Results
             task.OnAddedToWorker += w =>
             {
 
-                var queueLength = w.Grade.NumberOfTasksGrade;
+                var queueLength = w.Grade.Meta.NumberOfTasks;
                 _workersQueue[w].Add(time, queueLength + 1);
                 _workersTasks[w].Add(task);
                 _workersGradesAtArrivalTask.Add(time, new Dictionary<Worker, double>());
@@ -85,7 +85,7 @@ namespace TaskSimulation.Results
             var task = @event.Task;
             var worker = @event.Worker;
             
-            var queueLength = worker.Grade.NumberOfTasksGrade;
+            var queueLength = worker.Grade.Meta.NumberOfTasks;
 
             _workersQueue[worker].Add(time, queueLength-1);
             _workersFinishedTasks[worker].Add(task);
@@ -625,10 +625,11 @@ namespace TaskSimulation.Results
         private string GetSumOfWorkerFinishedTsks()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"{"worker id"},{"Allocated Tasks"},{"Finished Tasks"}");
 
             foreach (var keyValuePair in _workersTasks)
             {
-                sb.AppendLine($"{"worker id"},{"Allocated Tasks"},{"Finished Tasks"}");
+                
                 var alloc= 0;
                 var finish = 0;
                 foreach( var item in keyValuePair.Value)
