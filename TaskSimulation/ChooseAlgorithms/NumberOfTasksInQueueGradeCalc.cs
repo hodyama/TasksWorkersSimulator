@@ -25,23 +25,24 @@ namespace TaskSimulation.ChooseAlgorithms
             return grade;
         }
 
-        public Grade UpdateOnTaskAdd(Grade grade, Worker w)
+        public Grade UpdateOnTaskAdd(Grade grade)
         {
-            // TODO add to metadata as NumberOfTasks
+            
             grade.Meta.NumberOfTasks++;
             UpdateQueueGrade(ref grade);
 
             return grade;
         }
-        public Grade UpdateOnTaskArrival(Grade grade, Worker w)
+        public Grade UpdateOnTaskArrival(Grade grade)
         {
             
             return grade;
 
         }
-        public Grade UpdateOnTaskRemoved(Worker worker, Task task) //WORKER TASK
+        public Grade UpdateOnTaskRemoved(Worker worker, Task task)
         {
             var grade = worker.Grade;
+
             grade.Meta.NumberOfTasks--;
             UpdateQueueGrade(ref grade);
 

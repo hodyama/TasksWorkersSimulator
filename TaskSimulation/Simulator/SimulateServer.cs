@@ -10,24 +10,27 @@ namespace TaskSimulation.Simulator
     {
         public static double SimulationClock { get; private set; } // TNOW
         public static double SimulatorMaxRunTime { get; private set; }
-        private static BaseData _bData;
-       // private const double WARM_UP_TIME = 100;
+        public static double WARM_UP_TIME { get; private set; }
+        public static bool UPDATE_SCORE_ON_TASK_ARRIVAL_MODE { get; private set; }
+      
 
         private readonly TasksJournal _tasksJournal;
         private readonly WorkersJournal _workersJournal;
         private readonly SimulationEventMan _simulationEvents;
         private readonly Utilization _utilization;// { get; private set; }
         private readonly DebugSimpleOutput _dbPrint;
-       // private readonly BaseData _bData;
+        private readonly BaseData _bData;
         
 
-        public SimulateServer(double maxSimulationTime = Int32.MaxValue)
+        public SimulateServer(double warm_up_time, double maxSimulationTime = Int32.MaxValue )
         {
             
             _simulationEvents = new SimulationEventMan();
             SimulationClock = 0;
             SimulatorMaxRunTime = maxSimulationTime;
-            
+            WARM_UP_TIME = warm_up_time;
+            UPDATE_SCORE_ON_TASK_ARRIVAL_MODE = true;
+
             _utilization = new Utilization();
             _tasksJournal = new TasksJournal();
             _workersJournal = new WorkersJournal();
@@ -63,7 +66,7 @@ namespace TaskSimulation.Simulator
                 if (nextEvent is TaskArrivalEvent || nextEvent is TaskFinishedEvent)
                 {
                     nextEvent.Accept(_tasksJournal);
-                    //if(SimulationClock>WARM_UP_TIME)
+                    if(SimulationClock>WARM_UP_TIME)
                         nextEvent.Accept(_bData);
                     nextEvent.Accept(_workersJournal);
                 }
@@ -96,22 +99,21 @@ namespace TaskSimulation.Simulator
         {
             return _utilization;
         }
+
         public string GetWorkerUtilization()
         {
             return _bData.GetUtilization();
         }
 
-        public string GetShortOutput()
-        {
-            return _dbPrint.ToString();
-        }
+       
         public  void GetBaseData()
         {
              _bData.CreateBaseDataFile();
         }
-        public  static double GetWorkerWindowTL(Worker w, double start_time)
+
+        public string GetShortOutput()
         {
-            return _bData.GetWorkerWindowTL( w,  start_time);
+            return _dbPrint.ToString();
         }
 
         public void PrintSimulationState()

@@ -34,7 +34,9 @@
             public ExecutionWorkersQualityDistribution WorkersQualityDistribution { get; set; }
 
             /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
             public string GradeSystem { get; set; }
+          
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -43,6 +45,10 @@
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
             public double MaxSimulationTime { get; set; }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public long warm_up_time { get; set; }
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -196,9 +202,12 @@
             {
                 new Execution()
                 {
-                    InitialNumOfWorkers = 10,
+                    
+                    InitialNumOfWorkers = 3,
                     MaxSimulationTime = 10,
-                    Seed = 1,
+                    warm_up_time=0,
+                    Seed = 0,
+                    GradeSystem="AQL",
                     TaskArrivalRate = new ExecutionTaskArrivalRate()
                     {
                         Type = "ContinuousUniform",

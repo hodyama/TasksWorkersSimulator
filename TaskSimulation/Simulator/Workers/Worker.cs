@@ -35,7 +35,7 @@ namespace TaskSimulation.Simulator.Workers
 
             task.SetStateAddedTo(this);
 
-            Grade = SimDistribution.I.GradeSystem.UpdateOnTaskAdd(Grade,this);
+            Grade = SimDistribution.I.GradeSystem.UpdateOnTaskAdd(Grade);
 
             ContinueToNextTask();
         }

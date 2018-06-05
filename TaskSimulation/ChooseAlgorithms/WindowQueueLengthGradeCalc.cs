@@ -31,11 +31,11 @@ namespace TaskSimulation.ChooseAlgorithms
             return grade;
         }
 
-        public Grade UpdateOnTaskAdd(Grade grade, Worker worker)
+        public Grade UpdateOnTaskAdd(Grade grade)
         {
-            // TODO add to metadata as NumberOfTasks
+            
 
-            UpdateQueueGrade(ref grade, worker);
+            UpdateQueueGrade(ref grade);
             grade.Meta.NumberOfTasks++;
             grade.Meta._workerQueue.Add(Simulator.SimulateServer.SimulationClock, grade.Meta.NumberOfTasks);
 
@@ -43,17 +43,18 @@ namespace TaskSimulation.ChooseAlgorithms
 
             return grade;
         }
-        public Grade UpdateOnTaskArrival(Grade grade, Worker worker )
+        public Grade UpdateOnTaskArrival(Grade grade )
         {
-            UpdateQueueGrade(ref grade, worker);
+            UpdateQueueGrade(ref grade);
             return grade;
 
         }
-        public Grade UpdateOnTaskRemoved(Worker worker, Task task) //WORKER TASK
+        public Grade UpdateOnTaskRemoved(Worker worker, Task task)
         {
             var grade = worker.Grade;
 
-            UpdateQueueGrade(ref grade, worker);
+
+            UpdateQueueGrade(ref grade);
 
             grade.Meta.NumberOfTasks--;
             grade.Meta._workerQueue.Add(Simulator.SimulateServer.SimulationClock, grade.Meta.NumberOfTasks);
@@ -67,7 +68,7 @@ namespace TaskSimulation.ChooseAlgorithms
         }
 
         
-        private void UpdateQueueGrade(ref Grade grade, Worker w)
+        private void UpdateQueueGrade(ref Grade grade)
         {
             
             var currentTime = Simulator.SimulateServer.SimulationClock;

@@ -43,17 +43,31 @@ namespace TaskSimulationCmd
             var executions = execData.Executions.Length;
             _summaries = new ExecutionSummary[executions];
 
-            // TODO move grade system to file
-            //SimDistribution.I.GradeSystem = new OriginalGradeCalc();
-            SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(6);
-            // SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
-            //SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
+          
 
-            SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
-            _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
+           
+           // _sw = new StreamWriter($"xxxxxxxxxxxxxxxxxxxxxxxxx{DateTime.Now.ToFileTime()}.csv");
+
+
             for (var i = 0; i <executions ; i++)
             {
-                // Load the execution data for each iteration
+                var GradeSystem = execData.Executions[i].GradeSystem;
+                if (GradeSystem=="AQL")
+                    SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
+                else if (GradeSystem == "AQL()")
+                    SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(6);
+                else if (GradeSystem == "JSQ")
+                    SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
+                else if (GradeSystem == "ORIGINAL")
+                    SimDistribution.I.GradeSystem = new OriginalGradeCalc();
+                else
+                {
+                    Log.Err($"Load Grade System for execution {i} failed.");
+                    return;
+                }
+
+                SimDistribution.I.GradeSystemChooseMethod = SimDistribution.I.GradeSystem.ChooseMethod();
+
                 var loadStatus = SimDistribution.I.LoadData(i, execData);
 
                 if (!loadStatus)
@@ -68,7 +82,7 @@ namespace TaskSimulationCmd
                 Log.I($"------------ Simulation Execution {i} ------------", ConsoleColor.DarkCyan);
 
                 _stopwatch.Restart();
-                SingleExecution(maxSimulationTime, initialNumOfWorkers);
+                SingleExecution(maxSimulationTime, initialNumOfWorkers, execData.Executions[i].warm_up_time);
                 _stopwatch.Stop();
 
                 Log.I($"Execution -{i}- Runtime: {_stopwatch.Elapsed}", ConsoleColor.Blue);
@@ -82,14 +96,14 @@ namespace TaskSimulationCmd
             Log.I();
             Log.I("----------- Print Results ----------- ", ConsoleColor.Blue);
             //_summaries.ToList().ForEach(v => Log.I(v.ToString()));
-            _sw.Close();
+           // _sw.Close();
             while (true)
             { }
         }
 
-        public static string SingleExecution(double time, long workers)
+        public static string SingleExecution(double time, long workers, long warm_up_time)
         {
-            var simulator = new SimulateServer(time);
+            var simulator = new SimulateServer( warm_up_time, time);
 
             simulator.Initialize(workers);
 
@@ -100,7 +114,8 @@ namespace TaskSimulationCmd
             Log.I();
             Log.I("----------- Post execution calculations ----------- ", ConsoleColor.Blue);
             simulator.GetBaseData();
-            _sw.Write(simulator.GetWorkerUtilization());
+            //_sw.Write(simulator.GetWorkerUtilization());
+
             var rf = new ResultsFile($"test_{DateTime.Now.ToFileTime()}.csv", simulator.GetResults());
             rf.GenerateCsvFile();
             
