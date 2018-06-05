@@ -1,4 +1,6 @@
-﻿namespace TaskSimulation.Simulator.Workers
+﻿using System.Collections.Generic;
+
+namespace TaskSimulation.Simulator.Workers
 {
     public class Grade
     {
@@ -24,6 +26,7 @@
             public double LastModifiedAt;
             public double WorkingTime;
             public int NumberOfTasks;
+            public SortedDictionary<double, int> _workerQueue;
         }
     }
 }

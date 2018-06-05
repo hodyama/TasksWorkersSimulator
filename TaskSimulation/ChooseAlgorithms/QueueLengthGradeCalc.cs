@@ -83,7 +83,7 @@ namespace TaskSimulation.ChooseAlgorithms
             grade.Meta.LastModifiedAt = Simulator.SimulateServer.SimulationClock;
 
             
-            //grade.Meta.WorkingTime += newDeltaTime;
+            grade.Meta.WorkingTime += newDeltaTime;
 
         }
     }

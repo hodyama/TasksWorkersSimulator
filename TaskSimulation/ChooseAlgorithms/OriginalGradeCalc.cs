@@ -18,9 +18,9 @@ namespace TaskSimulation.ChooseAlgorithms
                 FeedbackGrade = INITIAL_GRADE,
                 QualityGrade = INITIAL_GRADE,
                 ResponseGrade = INITIAL_GRADE,
-                
+                //NumberOfTasks = MAX_NUMBER_OF_TASKS,
 
-        };
+            };
             grade.Meta.NumberOfTasks = MAX_NUMBER_OF_TASKS;
             grade.TotalGrade = CalculateFinalGrade(grade);
 
