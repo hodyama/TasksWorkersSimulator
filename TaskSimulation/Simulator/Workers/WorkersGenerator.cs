@@ -14,7 +14,7 @@ namespace TaskSimulation.Simulator.Workers
         {
             _wokersPool = new List<Worker>();
             _qualities = qualities;
-            AddWorkers(INITIAL_POOL_SIZE);
+            //AddWorkers(INITIAL_POOL_SIZE);
         }
 
         private void AddWorkers(int numOfWorkers)
@@ -29,7 +29,7 @@ namespace TaskSimulation.Simulator.Workers
         public Worker GetNextWorker()
         {
             if (_position >= _wokersPool.Count)
-                AddWorkers(_wokersPool.Count + 1);
+                AddWorkers(1);//_wokersPool.Count + 1);
 
             return _wokersPool[_position++];
         }

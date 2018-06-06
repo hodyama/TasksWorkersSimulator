@@ -99,27 +99,24 @@
         public class ExecutionWorkersQualityDistribution
         {
             /// <remarks/>
-            public ExecutionWorkersQualityDistributionFeedbackMean FeedbackMean { get; set; }
+            public ExecutionWorkersQualityDistributionFeedback Feedback { get; set; }
+
+           
 
             /// <remarks/>
-            public ExecutionWorkersQualityDistributionFeedbackStd FeedbackStd { get; set; }
+            public ExecutionWorkersQualityDistributionQuality Quality { get; set; }
+
+          
 
             /// <remarks/>
-            public ExecutionWorkersQualityDistributionQualityMean QualityMean { get; set; }
+            public ExecutionWorkersQualityDistributionResponseTime ProcessingTime { get; set; }
 
-            /// <remarks/>
-            public ExecutionWorkersQualityDistributionQualityStd QualityStd { get; set; }
-
-            /// <remarks/>
-            public ExecutionWorkersQualityDistributionResponseTimeMean ProcessingTimeMean { get; set; }
-
-            /// <remarks/>
-            public ExecutionWorkersQualityDistributionResponseTimeStd ProcessingTimeStd { get; set; }
+           
         }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-        public class ExecutionWorkersQualityDistributionFeedbackMean
+        public class ExecutionWorkersQualityDistributionFeedback
         {
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -130,9 +127,11 @@
             public double[] Params { get; set; }
         }
 
+       
+
         /// <remarks/>
         [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-        public class ExecutionWorkersQualityDistributionFeedbackStd
+        public class ExecutionWorkersQualityDistributionQuality
         {
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -143,9 +142,11 @@
             public double[] Params { get; set; }
         }
 
+       
+
         /// <remarks/>
         [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-        public class ExecutionWorkersQualityDistributionQualityMean
+        public class ExecutionWorkersQualityDistributionResponseTime
         {
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -154,47 +155,11 @@
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
             public double[] Params { get; set; }
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public double[] Ratio { get; set; }
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-        public class ExecutionWorkersQualityDistributionQualityStd
-        {
-            /// <remarks/>
-            [System.Xml.Serialization.XmlAttributeAttribute()]
-            public string Type { get; set; }
-
-            /// <remarks/>
-            [System.Xml.Serialization.XmlAttributeAttribute()]
-            public double[] Params { get; set; }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-        public class ExecutionWorkersQualityDistributionResponseTimeMean
-        {
-            /// <remarks/>
-            [System.Xml.Serialization.XmlAttributeAttribute()]
-            public string Type { get; set; }
-
-            /// <remarks/>
-            [System.Xml.Serialization.XmlAttributeAttribute()]
-            public double[] Params { get; set; }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-        public class ExecutionWorkersQualityDistributionResponseTimeStd
-        {
-            /// <remarks/>
-            [System.Xml.Serialization.XmlAttributeAttribute()]
-            public string Type { get; set; }
-
-            /// <remarks/>
-            [System.Xml.Serialization.XmlAttributeAttribute()]
-            public double[] Params { get; set; }
-        }
-        
         public static readonly InputXmlShema Default = new InputXmlShema()
         {
             V = new Version() { V = 1 },
@@ -226,36 +191,25 @@
 
                     WorkersQualityDistribution = new ExecutionWorkersQualityDistribution()
                     {
-                        FeedbackMean = new ExecutionWorkersQualityDistributionFeedbackMean()
+                        Feedback = new ExecutionWorkersQualityDistributionFeedback()
                         {
                             Type = "ContinuousUniform",
                             Params = new double[] {1, 2}
                         },
-                        FeedbackStd = new ExecutionWorkersQualityDistributionFeedbackStd()
+                      
+                        Quality = new ExecutionWorkersQualityDistributionQuality()
                         {
                             Type = "ContinuousUniform",
                             Params = new double[] {1, 2}
                         },
-                        QualityMean = new ExecutionWorkersQualityDistributionQualityMean()
+                      
+                        ProcessingTime = new ExecutionWorkersQualityDistributionResponseTime()
                         {
                             Type = "ContinuousUniform",
-                            Params = new double[] {1, 2}
+                            Params = new double[] {1, 2},
+                            Ratio= new double[]{1}
                         },
-                        QualityStd = new ExecutionWorkersQualityDistributionQualityStd()
-                        {
-                            Type = "ContinuousUniform",
-                            Params = new double[] {1, 2}
-                        },
-                        ProcessingTimeMean = new ExecutionWorkersQualityDistributionResponseTimeMean()
-                        {
-                            Type = "ContinuousUniform",
-                            Params = new double[] {1, 2}
-                        },
-                        ProcessingTimeStd = new ExecutionWorkersQualityDistributionResponseTimeStd()
-                        {
-                            Type = "ContinuousUniform",
-                            Params = new double[] {1, 2}
-                        },
+                       
                     }
                 }
             }

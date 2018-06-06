@@ -1,27 +1,39 @@
-﻿namespace TaskSimulation.Simulator.Workers
+﻿using static TaskSimulation.Utiles.InputXmlShema;
+
+namespace TaskSimulation.Simulator.Workers
 {
     public class WorkerQualies
     {
-        public double FeedbackMean { get; }
-        public double FeedbackStd { get; }
-        public double QualityMean { get; }
-        public double QualityStd { get; }
-        public double ResponseMean { get; }
-        public double ResponseStd { get; }
+        public string FeedbackType { get;  }
 
-        public WorkerQualies(double feedbackMean, double feedbackStd, double qualityMean, double qualityStd, double responseMean, double responseStd)
+        public double[] FeedbackParams { get;  }
+  
+        public string QualityType { get;  }
+
+        public double[] QualityParams { get;  }
+
+        public string ResponseType { get; }
+
+     
+        public double[] ResponseParams { get; }
+      
+
+      
+
+
+        public WorkerQualies(string  feedbackType, double[] feedbackParams,  string qualityType, double[] qualityParams, string responseType, double[] responseParams)
         {
-            FeedbackMean = feedbackMean;
-            FeedbackStd = feedbackStd;
-            QualityMean = qualityMean;
-            QualityStd = qualityStd;
-            ResponseMean = responseMean;
-            ResponseStd = responseStd;
+            FeedbackType = feedbackType;
+            FeedbackParams = feedbackParams;
+            
+            QualityType = qualityType;
+            QualityParams = qualityParams;
+            
+            ResponseType = responseType;
+            ResponseParams = responseParams;
+            
         }
 
-        public bool Validate()
-        {
-            return (QualityMean > 0 && QualityStd > 0 && FeedbackStd > 0 && FeedbackMean > 0 && ResponseStd > 0 && ResponseMean > 0);
-        }
+        
     }
 }

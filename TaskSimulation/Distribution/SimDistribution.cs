@@ -34,13 +34,17 @@ namespace TaskSimulation.Distribution
             var wqd = execData.WorkersQualityDistribution;
             WorkersQualityDistribution = new WorkersQualityDistribution()
             {
-                FeedbackMean = ReflectIContinuousDistribution.GetDistribution(wqd.FeedbackMean.Type,    wqd.FeedbackMean.Params,    GlobalRandom),
-                FeedbackStd = ReflectIContinuousDistribution.GetDistribution (wqd.FeedbackStd.Type,     wqd.FeedbackStd.Params,     GlobalRandom),
-                QualityMean = ReflectIContinuousDistribution.GetDistribution (wqd.QualityMean.Type,     wqd.QualityMean.Params,     GlobalRandom),
-                QualityStd = ReflectIContinuousDistribution.GetDistribution  (wqd.QualityStd.Type,      wqd.QualityStd.Params,      GlobalRandom),
-                
-                ProcessingMean =ReflectIContinuousDistribution.GetDistribution(wqd.ProcessingTimeMean.Type,wqd.ProcessingTimeMean.Params,GlobalRandom),
-                ProcessingStd = ReflectIContinuousDistribution.GetDistribution (wqd.ProcessingTimeStd.Type, wqd.ProcessingTimeStd.Params, GlobalRandom),
+
+                Feedback = wqd.Feedback,
+
+                Quality = wqd.Quality,
+
+
+                ProcessingTime = wqd.ProcessingTime,
+
+                numOfWorkers = execData.InitialNumOfWorkers,
+
+                counter = 0
             };
 
             return WorkersQualityDistribution.Validate();

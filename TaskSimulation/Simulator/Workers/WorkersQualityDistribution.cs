@@ -1,33 +1,51 @@
 using MathNet.Numerics.Distributions;
+using System.Collections.Generic;
+using static TaskSimulation.Utiles.InputXmlShema;
 
 namespace TaskSimulation.Simulator.Workers
 {
     public class WorkersQualityDistribution
     {
-        public IContinuousDistribution FeedbackMean { get; set; }
-        public IContinuousDistribution FeedbackStd { get; set; }
+       
 
-        public IContinuousDistribution QualityMean { get; set; }
-        public IContinuousDistribution QualityStd { get; set; }
+        public ExecutionWorkersQualityDistributionFeedback Feedback { get; set; } 
+                      
+        public ExecutionWorkersQualityDistributionQuality Quality { get; set; }
 
-        public IContinuousDistribution ProcessingMean { get; set; }
-        public IContinuousDistribution ProcessingStd { get; set; }
+        public ExecutionWorkersQualityDistributionResponseTime ProcessingTime { get; set; }
+        
+        public long numOfWorkers { get; set; }
 
-       // public int NUM_OF_WORKERS;
+        public long counter { get; set; }
+
+
+
 
         public bool Validate()
         {
-            return FeedbackMean != null && FeedbackStd != null &&
-                   QualityMean != null && QualityStd != null &&
-                   ProcessingMean != null && ProcessingStd != null;
+            
+            return Feedback != null &&
+                   Quality != null &&
+                   ProcessingTime != null ;
         }
 
         public WorkerQualies GenerateQualies()
         {
+            var ratio = 1.0;
+            long groupSize = numOfWorkers / ProcessingTime.Ratio.Length;
+            ratio = ProcessingTime.Ratio[(int)(counter / groupSize)];
+            counter++;
+
+            List<double> tmp = new List<double>();
+
+            foreach(var p in ProcessingTime.Params)
+            
+                tmp.Add(p * ratio);
+              
             return new WorkerQualies(
-                FeedbackMean.Sample(), FeedbackStd.Sample(), 
-                QualityMean.Sample(), QualityStd.Sample(),
-                ProcessingMean.Sample(), ProcessingStd.Sample());
+                Feedback.Type,Feedback.Params, 
+                Quality.Type, Quality.Params,
+                ProcessingTime.Type, tmp.ToArray());
         }
     }
 }
