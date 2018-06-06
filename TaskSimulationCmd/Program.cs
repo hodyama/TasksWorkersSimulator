@@ -55,7 +55,7 @@ namespace TaskSimulationCmd
                 if (GradeSystem=="AQL")
                     SimDistribution.I.GradeSystem = new QueueLengthGradeCalc();
                 else if (GradeSystem == "AQL()")
-                    SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(6);
+                    SimDistribution.I.GradeSystem = new WindowQueueLengthGradeCalc(execData.Executions[i].WindowLen);
                 else if (GradeSystem == "JSQ")
                     SimDistribution.I.GradeSystem = new NumberOfTasksInQueueGradeCalc();
                 else if (GradeSystem == "ORIGINAL")
@@ -78,11 +78,12 @@ namespace TaskSimulationCmd
 
                 var initialNumOfWorkers = execData.Executions[i].InitialNumOfWorkers;
                 var maxSimulationTime   = execData.Executions[i].MaxSimulationTime;
+                var UpdateScoreAtArrivalTask = execData.Executions[i].UpdateScoreAtArrivalTask;
 
                 Log.I($"------------ Simulation Execution {i} ------------", ConsoleColor.DarkCyan);
 
                 _stopwatch.Restart();
-                SingleExecution(maxSimulationTime, initialNumOfWorkers, execData.Executions[i].warm_up_time);
+                SingleExecution(maxSimulationTime, UpdateScoreAtArrivalTask, initialNumOfWorkers, execData.Executions[i].warm_up_time);
                 _stopwatch.Stop();
 
                 Log.I($"Execution -{i}- Runtime: {_stopwatch.Elapsed}", ConsoleColor.Blue);
@@ -101,9 +102,9 @@ namespace TaskSimulationCmd
             { }
         }
 
-        public static string SingleExecution(double time, long workers, long warm_up_time)
+        public static string SingleExecution(double time,bool updateMode, long workers, long warm_up_time)
         {
-            var simulator = new SimulateServer( warm_up_time, time);
+            var simulator = new SimulateServer(updateMode, warm_up_time, time);
 
             simulator.Initialize(workers);
 

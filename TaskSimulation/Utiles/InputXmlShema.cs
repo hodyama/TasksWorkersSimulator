@@ -36,7 +36,15 @@
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
             public string GradeSystem { get; set; }
-          
+
+            /// <remarks/> 
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public double WindowLen { get; set; }
+
+            /// <remarks/> 
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public bool UpdateScoreAtArrivalTask { get; set; }
+            
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -167,12 +175,14 @@
             {
                 new Execution()
                 {
-                    
+
                     InitialNumOfWorkers = 3,
                     MaxSimulationTime = 10,
                     warm_up_time=0,
                     Seed = 0,
                     GradeSystem="AQL",
+                    WindowLen=1,
+                    UpdateScoreAtArrivalTask=true,
                     TaskArrivalRate = new ExecutionTaskArrivalRate()
                     {
                         Type = "ContinuousUniform",

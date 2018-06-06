@@ -22,14 +22,14 @@ namespace TaskSimulation.Simulator
         private readonly BaseData _bData;
         
 
-        public SimulateServer(double warm_up_time, double maxSimulationTime = Int32.MaxValue )
+        public SimulateServer(double warm_up_time,bool mode, double maxSimulationTime = Int32.MaxValue )
         {
             
             _simulationEvents = new SimulationEventMan();
             SimulationClock = 0;
             SimulatorMaxRunTime = maxSimulationTime;
             WARM_UP_TIME = warm_up_time;
-            UPDATE_SCORE_ON_TASK_ARRIVAL_MODE = true;
+            UPDATE_SCORE_ON_TASK_ARRIVAL_MODE = mode;
 
             _utilization = new Utilization();
             _tasksJournal = new TasksJournal();
