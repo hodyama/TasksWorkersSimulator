@@ -33,14 +33,23 @@ namespace TaskSimulation.Simulator.Workers
         {
             var ratio = 1.0;
             long groupSize = numOfWorkers / ProcessingTime.Ratio.Length;
-            ratio = ProcessingTime.Ratio[(int)(counter / groupSize)];
+            if (groupSize == 0)
+                groupSize = 1;
+
+            var index = (int)(counter / groupSize);
+            if (index >= ProcessingTime.Ratio.Length)
+                index = (int)(counter % groupSize);
+            ratio = ProcessingTime.Ratio[index];
             counter++;
 
             List<double> tmp = new List<double>();
 
-            foreach(var p in ProcessingTime.Params)
-            
+            foreach (var p in ProcessingTime.Params)
+            {
                 tmp.Add(p * ratio);
+                Log.I("////////////           " + ratio + "               " + p, System.ConsoleColor.Magenta);
+            }
+
               
             return new WorkerQualies(
                 Feedback.Type,Feedback.Params, 

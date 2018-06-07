@@ -22,7 +22,7 @@ namespace TaskSimulation.Simulator
         private readonly BaseData _bData;
         
 
-        public SimulateServer(double warm_up_time,bool mode, double maxSimulationTime = Int32.MaxValue )
+        public SimulateServer(bool mode, double warm_up_time, double maxSimulationTime = Int32.MaxValue )
         {
             
             _simulationEvents = new SimulationEventMan();
