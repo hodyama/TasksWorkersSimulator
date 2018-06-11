@@ -45,10 +45,9 @@ namespace TaskSimulation.Simulator.Workers
             List<double> tmp = new List<double>();
 
             foreach (var p in ProcessingTime.Params)
-            {
+            
                 tmp.Add(p * ratio);
-                Log.I("////////////           " + ratio + "               " + p, System.ConsoleColor.Magenta);
-            }
+           
 
               
             return new WorkerQualies(

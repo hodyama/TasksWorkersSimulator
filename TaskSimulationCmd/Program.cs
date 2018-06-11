@@ -98,11 +98,11 @@ namespace TaskSimulationCmd
             Log.I("----------- Print Results ----------- ", ConsoleColor.Blue);
             //_summaries.ToList().ForEach(v => Log.I(v.ToString()));
            // _sw.Close();
-            while (true)
+           // while (true)
             { }
         }
 
-        public static string SingleExecution(double time,bool updateMode, long workers, long warm_up_time)
+        public static void SingleExecution(double time,bool updateMode, long workers, long warm_up_time)
         {
             var simulator = new SimulateServer(updateMode, warm_up_time, time);
 
@@ -117,10 +117,10 @@ namespace TaskSimulationCmd
             simulator.GetBaseData();
             //_sw.Write(simulator.GetWorkerUtilization());
 
-            var rf = new ResultsFile($"test_{DateTime.Now.ToFileTime()}.csv", simulator.GetResults());
-            rf.GenerateCsvFile();
-            
-            return rf.GenerateSummery();
+            // var rf = new ResultsFile($"test_{DateTime.Now.ToFileTime()}.csv", simulator.GetResults());
+            // rf.GenerateCsvFile();
+           // rf.GenerateSummery();
+            return; 
         }
 
         private static InputXmlShema LoadInputFile(string[] args)
