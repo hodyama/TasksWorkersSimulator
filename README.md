@@ -19,3 +19,10 @@ attributes are:
   - Exponential format: "rate"
 - All the continius distibutions from [MathNet](https://numerics.mathdotnet.com/api/MathNet.Numerics.Distributions/) are supported (Laplace, Normal, StudentT etc.) 
 
+# CrowdScore
+A GUI for TaskWorkerSimulator:
+-Define the configuration for a simulation
+-Run the simulator
+-and create graphical results from the generated data.
+
+This GUI wrote using Python-Kivy .
