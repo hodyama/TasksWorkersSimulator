@@ -21,8 +21,8 @@ attributes are:
 
 # CrowdScore
 A GUI for TaskWorkerSimulator:
--Define the configuration for a simulation
--Run the simulator
--and create graphical results from the generated data.
+- Define the configuration for a simulation
+- Run the simulator
+- and create graphical results from the generated data.
 
 This GUI wrote using Python-Kivy .
