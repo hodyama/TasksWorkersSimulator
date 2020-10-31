@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InputXmlShema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <V V="1" />
+  <Executions>
+	<Execution seed="0" InitialNumOfWorkers="2" MaxSimulationTime="50" warm_up_time="0" GradeSystem="AQL" WindowLen="0" UpdateScoreAtArrivalTask="false">
+      <TaskArrivalRate Type="Exponential" Params="1" />
+      <WorkerArrivalRate Type="ContinuousUniform" Params="86400 86400" />
+      <WorkerLeaveRate Type="ContinuousUniform" Params="86400 86400" />
+      <WorkersQualityDistribution>
+        <Feedback Type="ContinuousUniform" Params="1 1" />
+
+        <Quality Type="ContinuousUniform" Params="1 1" />
+
+
+        <ProcessingTime Type="Exponential" Params="0.208"  Ratio="1 2 4" />
+
+
+      </WorkersQualityDistribution>
+    </Execution>
+
+  </Executions>
+</InputXmlShema>

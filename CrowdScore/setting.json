@@ -1,0 +1,16 @@
+[
+    {
+        "type": "path",
+        "title": "Simulator Path",
+        "desc": "Give the path for the simulator folder",
+        "section": "CrowdScore",
+        "key": "simulator_path"
+    },
+    {
+        "type": "path",
+        "title": "Save project at..",
+        "desc": "By default, where to save new project?",
+        "section": "CrowdScore",
+        "key": "project_path"
+    }
+]

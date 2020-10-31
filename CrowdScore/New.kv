@@ -1,0 +1,155 @@
+<New>:
+
+    TabbedPanel:
+        tab_pos: 'top_right'
+        do_default_tab: False
+
+        TabbedPanelItem:
+            text: 'Define'
+
+            BoxLayout:
+                orientation:'vertical'
+                padding:0
+
+            	Bubble:
+
+            	    show_arrow:False
+            	    arrow_pos:'left_bottom'
+            	    GridLayout:
+                        cols: 4
+                        padding : 40,10
+                        spacing: 30, 10
+
+            	        Label:
+            	            text:"simulation time:"
+
+            	        TextInput:
+                            id: simulationtime
+                            text: app.simulation_content.split(',')[1]
+
+
+                        Label:
+            	            text:"warm up time:"
+            	        TextInput:
+                            id: warmuptime
+                            text: app.simulation_content.split(',')[2]
+
+            	        Label:
+            	            text:"grade system:"
+
+            	        Spinner:
+
+                            values: ['AQL','JSQ','AOL()','ORIGINAL','RANDOMAL']
+                            id:gradesystem
+                            text: app.simulation_content.split(',')[3]
+                        Label:
+            	            text:"window length:"
+            	        TextInput:
+                            id: windowlength
+                            text: app.simulation_content.split(',')[4]
+                        Label:
+            	            text:"update score at arrival task"
+                        CheckBox:
+
+                            id : updatescore
+
+                        Label:
+            	            text:"number of workers:"
+            	        TextInput:
+                            id: numberofworkers
+                            text: app.simulation_content.split(',')[0]
+
+
+
+            	Bubble:
+            	    show_arrow:False
+            	    arrow_pos:'left_bottom'
+            	    GridLayout:
+                        cols: 2
+                        padding : 40,10
+                        spacing: 30, 10
+
+            	        Label:
+            	            text:"task arrival distribution:"
+
+            	        Spinner:
+                            text: app.simulation_content.split(',')[6]
+                            values: ['Exponential','ContinuousUniform','Normal']
+                            id:taskdist
+
+
+                        Label:
+            	            text:"parameter(s) of distribution:"
+            	        TextInput:
+            	            text: app.simulation_content.split(',')[7]
+                            id: taskparams
+
+            	        Label:
+            	            text:"if there are 2 parametres you should enter them\nwith space between them e.g :1  0.8 "
+
+
+            	Bubble:
+            	    show_arrow:False
+            	    arrow_pos:'left_bottom'
+
+            	    GridLayout:
+                        cols: 2
+                        padding : 40,10
+                        spacing: 30, 10
+
+            	        Label:
+            	            text:"workers processing time distribution:"
+
+            	        Spinner:
+                            text: app.simulation_content.split(',')[8]
+                            values: ['Exponential','ContinuousUniform','Normal']
+                            id:procdist
+
+
+                        Label:
+            	            text:"parameter(s) of distribution:"
+            	        TextInput:
+            	            text: app.simulation_content.split(',')[9]
+                            id: procparams
+                        Label:
+            	            text:"ratio between workers groups"
+            	        TextInput:
+            	            text: app.simulation_content.split(',')[10]
+                            id: procratio
+
+                GridLayout:
+                    cols: 4
+                    padding : 10,10
+                    spacing: 10, 10
+                    size_hint_y:0.8
+                    Label:
+                        text:'Folder Name'
+                    TextInput:
+            	        text:root.get_folder_name()
+            	        id: folder_name
+            	    Label:
+                        text:'save project at'
+                    TextInput:
+            	        text:root.get_project_save()
+            	        id:project_save
+            	    Button:
+                        text:'save'
+                        on_press:root.save(project_save.text,folder_name.text,[numberofworkers.text,simulationtime.text, warmuptime.text,gradesystem.text,windowlength.text,str(updatescore.active).lower(),taskdist.text,taskparams.text,procdist.text,procparams.text,procratio.text])
+                        on_release:app.add_project(numberofworkers.text+", "+simulationtime.text+", "+warmuptime.text+" ,"+gradesystem.text+", "+windowlength.text+" ,"+str(updatescore.active).lower()+", "+taskdist.text+", "+taskparams.text+" ,"+procdist.text+" ,"+procparams.text+" ,"+procratio.text)
+        TabbedPanelItem:
+            text: 'Run'
+            on_release:console.text=console.text+' finished with exit code '+root.run()
+            BoxLayout:
+                RstDocument:
+                    id: console
+                    text:'Running...\n'
+
+
+        TabbedPanelItem:
+            text: 'Visualize'
+            on_release:root.visual()
+            BoxLayout:
+
+
+
+

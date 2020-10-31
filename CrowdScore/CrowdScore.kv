@@ -1,0 +1,54 @@
+#:kivy 1.10.0
+
+<Menu>:
+    manager: screen_manager
+    orientation: "horizontal"
+    ActionBar:
+        size_hint_y: 1
+        size_hint_x: None
+        ActionView:
+
+            orientation: "vertical"
+            use_separator: True
+            ActionPrevious:
+
+
+            ActionButton:
+
+                text: "New"
+                on_press: app.new_simulation()
+                on_release: root.manager.current = "new"
+
+            ActionButton:
+
+                text:"Open"
+
+                on_release: root.manager.current = "projects"
+            ActionButton:
+
+                text: "Settings"
+
+                on_release:app.open_settings()
+
+
+    Manager:
+        id: screen_manager
+
+
+
+
+
+<Manager>:
+
+    newScreen: newScreen
+
+    projectsScreen:projectsScreen
+
+    New:
+        id: newScreen
+        name: 'new'
+
+
+    Projects:
+        id: projectsScreen
+        name:'projects'
